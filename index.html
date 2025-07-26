@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>89° Natalicio de Fidel Castro - Legado Revolucionario</title>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Bangers&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP para animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/home.css">
+    
+    <!-- Preconexión para API -->
+    <link rel="preconnect" href="https://api.airtable.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/icons/icono-estrella-26.svg" type="image/svg+xml">
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Animación de carga -->
+    <div id="loader" class="fixed inset-0 bg-white z-50 flex items-center justify-center transition-opacity duration-500">
+        <div class="w-24 h-24">
+            <svg viewBox="0 0 100 100" class="star-animation fill-current text-[#CB1515]">
+                <path d="M50,5 L61.8,38.2 L97.5,38.2 L68.9,59.6 L80.7,92.8 L50,71.4 L19.3,92.8 L31.1,59.6 L2.5,38.2 L38.2,38.2 Z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Barra de navegación -->
+    <nav class="fixed w-full bg-white shadow-md z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <div class="w-10 h-10 mr-2">
+                            <svg viewBox="0 0 100 100" class="star-animation fill-current text-[#CB1515]">
+                                <path d="M50,5 L61.8,38.2 L97.5,38.2 L68.9,59.6 L80.7,92.8 L50,71.4 L19.3,92.8 L31.1,59.6 L2.5,38.2 L38.2,38.2 Z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-xl" style="color: #002A8F;">Fidel Castro</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-900 hover:text-[#CB1515] font-medium">Inicio</a>
+                    <a href="curiosidades.html" class="text-gray-900 hover:text-[#CB1515] font-medium">Curiosidades</a>
+                    <a href="analisis.html" class="text-gray-900 hover:text-[#CB1515] font-medium">Análisis</a>
+                    <a href="mexico.html" class="text-gray-900 hover:text-[#CB1515] font-medium">México</a>
+                    <button id="dark-mode-toggle" class="bg-gray-200 rounded-full p-2 transition-colors hover:bg-gray-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-gray-900">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Menú móvil -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-900 hover:bg-gray-100">Inicio</a>
+                <a href="curiosidades.html" class="block px-3 py-2 text-gray-900 hover:bg-gray-100">Curiosidades</a>
+                <a href="analisis.html" class="block px-3 py-2 text-gray-900 hover:bg-gray-100">Análisis</a>
+                <a href="mexico.html" class="block px-3 py-2 text-gray-900 hover:bg-gray-100">México</a>
+                <button id="mobile-dark-mode-toggle" class="block w-full text-left px-3 py-2 text-gray-900 hover:bg-gray-100">Modo Oscuro</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Principal -->
+    <section id="inicio" class="pt-20 pb-16 min-h-screen relative overflow-hidden bg-white">
+        <!-- Fondo con banderas ondeando -->
+        <div class="absolute inset-0 flag-wave" style="
+            background-image: 
+                linear-gradient(45deg, rgba(203,21,21,0.05) 25%, transparent 25%, transparent 75%, rgba(203,21,21,0.05) 75%, rgba(203,21,21,0.05)),
+                linear-gradient(-45deg, rgba(203,21,21,0.05) 25%, transparent 25%, transparent 75%, rgba(203,21,21,0.05) 75%, rgba(203,21,21,0.05));
+            background-size: 200px 200px;
+            opacity: 0.1;
+            z-index: 0;
+        "></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center py-12 md:py-20">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: #002A8F;">
+                    Fidel Castro: <br><span style="color: #CB1515;">89 Años de un Legado que Forjó la Historia</span>
+                </h1>
+                
+                <div class="max-w-3xl mx-auto mt-10">
+                    <div class="bg-white rounded-lg shadow-xl p-6 border-t-4" style="border-top-color: #CB1515;">
+                        <p class="text-lg text-gray-800 mb-4">
+                            Fidel Alejandro Castro Ruz, nacido el 13 de agosto de 1926, fue una de las figuras más influyentes del siglo XX. Como líder de la Revolución Cubana, transformó su nación en el primer estado socialista del hemisferio occidental, desafiando paradigmas y manteniendo una soberanía férrea frente a la presión internacional.
+                        </p>
+                        <p class="text-lg text-gray-800">
+                            Su gobierno implementó reformas radicales en la educación y la salud, logros que se convirtieron en pilares de su legado. Más allá de Cuba, su voz resonó en todo el mundo como un símbolo de antiimperialismo y resistencia.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <a href="curiosidades.html" class="px-4 py-3 text-center font-bold text-white rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" style="background-color: #FF3C00;">
+                            Curiosidades
+                        </a>
+                        <a href="analisis.html" class="px-4 py-3 text-center font-bold text-white rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" style="background-color: #4E3524;">
+                            Documentos
+                        </a>
+                        <a href="mexico.html" class="px-4 py-3 text-center font-bold text-white rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" style="background-color: #006847;">
+                            México
+                        </a>
+                        <a href="#comentarios" class="px-4 py-3 text-center font-bold text-white rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" style="background-color: #002A8F;">
+                            Opiniones
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Histórico -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: #002A8F;">
+                    Cronología Histórica
+                </h2>
+                <div class="w-32 h-1 mx-auto" style="background-color: #CB1515;"></div>
+            </div>
+            
+            <div class="relative max-w-4xl mx-auto">
+                <!-- Línea central -->
+                <div class="absolute left-1/2 top-0 bottom-0 w-1 transform -translate-x-1/2" style="background-color: #CB1515;"></div>
+                
+                <!-- Eventos -->
+                <div class="mb-12 timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4" style="border-left-color: #D4AF37;">
+                        <h3 class="text-xl font-bold mb-2">1926: Nacimiento</h3>
+                        <p class="text-gray-700">Fidel Alejandro Castro Ruz nace el 13 de agosto en Birán, Cuba.</p>
+                    </div>
+                </div>
+                
+                <div class="mb-12 timeline-item ml-auto w-full md:w-1/2 pl-0 md:pl-12">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4" style="border-left-color: #002A8F;">
+                        <h3 class="text-xl font-bold mb-2">1953: Asalto al Cuartel Moncada</h3>
+                        <p class="text-gray-700">Primer intento revolucionario contra el régimen de Batista.</p>
+                    </div>
+                </div>
+                
+                <div class="mb-12 timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4" style="border-left-color: #006847;">
+                        <h3 class="text-xl font-bold mb-2">1956: Expedición del Granma</h3>
+                        <p class="text-gray-700">Fidel y 81 revolucionarios zarpan de México hacia Cuba en el yate Granma.</p>
+                    </div>
+                </div>
+                
+                <div class="mb-12 timeline-item ml-auto w-full md:w-1/2 pl-0 md:pl-12">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4" style="border-left-color: #4E3524;">
+                        <h3 class="text-xl font-bold mb-2">1959: Triunfo de la Revolución</h3>
+                        <p class="text-gray-700">El 1 de enero, Batista huye de Cuba. Fidel entra victorioso en La Habana.</p>
+                    </div>
+                </div>
+                
+                <div class="mb-12 timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4" style="border-left-color: #CB1515;">
+                        <h3 class="text-xl font-bold mb-2">1961: Bahía de Cochinos</h3>
+                        <p class="text-gray-700">Fracaso de la invasión de exiliados cubanos apoyados por Estados Unidos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Comentarios -->
+    <section id="comentarios" class="py-16 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: #002A8F;">
+                    Comparte tu Reflexión
+                </h2>
+                <p class="text-gray-700 max-w-2xl mx-auto">
+                    ¿Qué significa para ti el legado de Fidel Castro? Comparte tus pensamientos y reflexiones con nuestra comunidad.
+                </p>
+            </div>
+            
+            <!-- Formulario de Comentarios -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <form id="comment-form">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 mb-2">Tu Nombre</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #002A8F; focus:ring-color: #CB1515;">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 mb-2">Email (Opcional)</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #002A8F; focus:ring-color: #CB1515;">
+                    </div>
+                    <div class="mb-4">
+                        <label for="comment" class="block text-gray-700 mb-2">Comparte tu reflexión</label>
+                        <textarea id="comment" name="comment" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #002A8F; focus:ring-color: #CB1515;"></textarea>
+                    </div>
+                    <button type="submit" class="px-6 py-3 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-300" style="background-color: #CB1515;">
+                        Enviar Comentario
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Lista de Comentarios -->
+            <div id="comments-container">
+                <h3 class="text-2xl font-bold mb-6" style="color: #002A8F;">Reflexiones Recientes</h3>
+                <div class="space-y-6">
+                    <!-- Comentarios se cargarán dinámicamente -->
+                    <div class="text-center py-8">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style="border-color: #CB1515;"></div>
+                        <p class="mt-2 text-gray-600">Cargando comentarios...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#002A8F] text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 mr-2">
+                            <svg viewBox="0 0 100 100" class="fill-current text-white">
+                                <path d="M50,5 L61.8,38.2 L97.5,38.2 L68.9,59.6 L80.7,92.8 L50,71.4 L19.3,92.8 L31.1,59.6 L2.5,38.2 L38.2,38.2 Z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-xl">Fidel Castro</span>
+                    </div>
+                    <p class="text-gray-300">
+                        Sitio conmemorativo desarrollado en honor a la memoria histórica.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition">Inicio</a></li>
+                        <li><a href="curiosidades.html" class="text-gray-300 hover:text-white transition">Curiosidades</a></li>
+                        <li><a href="analisis.html" class="text-gray-300 hover:text-white transition">Análisis</a></li>
+                        <li><a href="mexico.html" class="text-gray-300 hover:text-white transition">México</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Recursos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Biblioteca Digital</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Galería Fotográfica</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Documentales</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Archivos Históricos</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2025 | Sitio conmemorativo desarrollado en honor a la memoria histórica.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/airtable.js"></script>
+    <script src="js/comments.js"></script>
+    
+    <script>
+        // Inicialización después de cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ocultar loader
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 1000);
+            
+            // Inicializar funcionalidades
+            initDarkModeToggle();
+            initMobileMenu();
+            initCommentForm();
+            loadComments();
+        });
+    </script>
+</body>
+</html>
