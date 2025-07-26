@@ -1,0 +1,111 @@
+/* ==========================================================================
+   Variables CSS Globales
+   ========================================================================== */
+:root {
+    /* Paleta A: Minimalismo Revolucionario */
+    --rojo-revolucion: #CB1515;
+    --azul-profundo: #002A8F;
+    --blanco-puro: #FFFFFF;
+    --negro-tipografico: #000000;
+    --oro-destacado: #D4AF37;
+
+    /* Paleta B: Estilo Cómic Caricaturesco */
+    --amarillo-comic: #FFD100;
+    --rojo-comic: #FF3C00;
+    --azul-comic: #00A2FF;
+    --negro-comic: #000000;
+    --blanco-comic: #FFFFFF;
+
+    /* Paleta C: Estilo Biblioteca Académica */
+    --madera-oscura: #4E3524;
+    --piel-libro: #D7C9AA;
+    --papel-crema: #F5F0E5;
+    --verde-biblioteca: #2E5E4E;
+    --bordeaux: #800020;
+
+    /* Paleta D: Arte Popular Mexicano */
+    --verde-mexico: #006847;
+    --rojo-mexico: #CE1126;
+    --blanco-mexico: #FFFFFF;
+    --terracota: #9E4A3F;
+    --turquesa: #40B5AD;
+
+    /* Tipografías */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+}
+
+/* ==========================================================================
+   Reset Básico y Estilos Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+a {
+    color: var(--rojo-revolucion);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--azul-profundo);
+}
+
+/* ==========================================================================
+   Clases de Utilidad
+   ========================================================================== */
+.container {
+    max-width: 1200px;
+}
+
+/* Estilo para los links de navegación */
+.nav-link {
+    position: relative;
+    padding-bottom: 0.25rem;
+    color: var(--negro-tipografico);
+    font-weight: 600; /* Open Sans Semi-Bold */
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--rojo-revolucion);
+    transition: width 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Accesibilidad: Foco visible para navegación con teclado */
+:focus-visible {
+    outline: 3px solid var(--azul-profundo);
+    outline-offset: 2px;
+    border-radius: 4px;
+}

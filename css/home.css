@@ -1,0 +1,117 @@
+/* ==========================================================================
+   Animaciones Clave
+   ========================================================================== */
+
+/* 1. Pulsación de la Estrella */
+@keyframes pulsar {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* 2. Bandera Cubana Ondeando (textura sutil) */
+@keyframes wave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* ==========================================================================
+   Estilos de la Página Principal
+   ========================================================================== */
+
+#home-hero {
+    background: linear-gradient(to bottom, var(--blanco-puro), #F0F0F0);
+}
+
+/* Capa con el patrón de estrellas doradas */
+.golden-stars-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/decorations/stars-pattern.png'); /* Asegúrate de tener este asset */
+    background-repeat: repeat;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+/* Capa con la animación de la bandera */
+.waving-flag-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/images/backgrounds/cuban-flag-texture.png'); /* Asegúrate de tener este asset */
+    background-size: cover;
+    opacity: 0.05;
+    animation: wave 40s linear infinite;
+    z-index: 2;
+}
+
+/* Aplicar la animación a la estrella */
+#pulsing-star {
+    animation: pulsar 3s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+    will-change: transform, opacity; /* Optimización */
+}
+
+/* Tipografía específica de la Home */
+#home-hero h1 {
+    font-family: var(--font-heading);
+    color: var(--negro-tipografico);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+#home-hero p {
+    font-family: var(--font-body);
+}
+
+/* Botón "Chispa Revolucionaria" */
+.revolutionary-button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--blanco-puro);
+    background-color: var(--rojo-revolucion);
+    border: 2px solid transparent;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.revolutionary-button:hover {
+    color: var(--rojo-revolucion);
+    background-color: var(--blanco-puro);
+    border-color: var(--rojo-revolucion);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(203, 21, 21, 0.3);
+}
+
+/* Efecto de chispa */
+.revolutionary-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: var(--oro-destacado);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.revolutionary-button:hover::after {
+    transform: translate(-50%, -50%) scale(75);
+    opacity: 0;
+}
