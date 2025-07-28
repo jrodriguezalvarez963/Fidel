@@ -70,7 +70,7 @@
       </nav>
     </section>
 
-    <!-- SECCIÓN DE COMENTARIOS CON AIRTABLE -->
+    <!-- SECCIÓN DE COMENTARIOS INTEGRADA -->
     <section id="comentarios" aria-label="Sección de comentarios de usuarios" style="margin-top: 4rem;">
       <h2>Comentarios</h2>
 
@@ -82,4 +82,31 @@
         <input type="text" id="input-nombre" name="nombre" required minlength="2" aria-required="true" autocomplete="name" /><br />
 
         <label for="input-correo">Correo (opcional)</label><br />
-        <input type="email" id="input-correo" name="correo" autocomplete
+        <input type="email" id="input-correo" name="correo" autocomplete="email" placeholder="ejemplo@correo.com" /><br />
+
+        <label for="input-comentario">Comentario</label><br />
+        <textarea id="input-comentario" name="comentario" required minlength="5" rows="4" aria-required="true" ></textarea><br />
+
+        <button type="submit" id="btn-enviar" disabled>Enviar</button>
+      </form>
+
+      <p id="contador-comentarios" aria-live="polite" aria-atomic="true" style="margin-top: 1rem;"></p>
+
+      <!-- Contenedor para mostrar comentarios -->
+      <div id="lista-comentarios" role="list" tabindex="0" aria-label="Lista de comentarios publicados" style="margin-top: 1rem;">
+        <!-- Comentarios se cargan dinámicamente aquí -->
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo" class="site-footer container">
+    <p tabindex="0">&copy; 2024 Sitio Conmemorativo Fidel Castro. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Importar DOMPurify para sanitización de inputs y outputs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.3/purify.min.js" integrity="sha512-fNPAkVfRWUMs+iZVVuK0kw7Y8iNEdYqy32ndixeFY48pGxl9vkeCKW6yclFf3BT5++vXIYD6Sk2LQB+J7qtgbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Importar scripts para integración con Airtable y manejo de comentarios -->
+  <script src="js/airtable.js" defer></script>
+  <script src="js/comentarios.js" type="module" defer></script>
+</body>
+</html>
