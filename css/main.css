@@ -1,111 +1,206 @@
-/* ==========================================================================
-   Variables CSS Globales
-   ========================================================================== */
-:root {
-    /* Paleta A: Minimalismo Revolucionario */
-    --rojo-revolucion: #CB1515;
-    --azul-profundo: #002A8F;
-    --blanco-puro: #FFFFFF;
-    --negro-tipografico: #000000;
-    --oro-destacado: #D4AF37;
+/* main.css */
 
-    /* Paleta B: Estilo Cómic Caricaturesco */
-    --amarillo-comic: #FFD100;
-    --rojo-comic: #FF3C00;
-    --azul-comic: #00A2FF;
-    --negro-comic: #000000;
-    --blanco-comic: #FFFFFF;
-
-    /* Paleta C: Estilo Biblioteca Académica */
-    --madera-oscura: #4E3524;
-    --piel-libro: #D7C9AA;
-    --papel-crema: #F5F0E5;
-    --verde-biblioteca: #2E5E4E;
-    --bordeaux: #800020;
-
-    /* Paleta D: Arte Popular Mexicano */
-    --verde-mexico: #006847;
-    --rojo-mexico: #CE1126;
-    --blanco-mexico: #FFFFFF;
-    --terracota: #9E4A3F;
-    --turquesa: #40B5AD;
-
-    /* Tipografías */
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Open Sans', sans-serif;
-}
-
-/* ==========================================================================
-   Reset Básico y Estilos Base
-   ========================================================================== */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+/* 1. Reset / Normalize CSS (basado en modern-normalize) */
 html {
-    scroll-behavior: smooth;
-    font-size: 16px;
+  line-height: 1.15; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 body {
-    font-family: var(--font-body);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  background: var(--blanco-puro);
+  color: var(--negro-tipografico);
+  min-height: 100vh;
+}
+
+main {
+  display: block;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  margin: 0.5em 0;
 }
 
+p {
+  margin: 0 0 1em 0;
+  line-height: 1.6;
+}
+
+/* Remove default button styles, inputs, selects */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+/* Reset link styles */
 a {
-    color: var(--rojo-revolucion);
-    text-decoration: none;
-    transition: color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
-a:hover {
-    color: var(--azul-profundo);
+/* Remove list styles */
+ul, ol {
+  padding-left: 1.25rem;
+  margin: 1em 0;
 }
 
-/* ==========================================================================
-   Clases de Utilidad
-   ========================================================================== */
-.container {
-    max-width: 1200px;
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-style: none;
 }
 
-/* Estilo para los links de navegación */
-.nav-link {
-    position: relative;
-    padding-bottom: 0.25rem;
-    color: var(--negro-tipografico);
-    font-weight: 600; /* Open Sans Semi-Bold */
+/* Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--rojo-revolucion);
-    transition: width 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+/* Utility to visually hide but keep accessible */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
-.nav-link:hover::after {
-    width: 100%;
-}
-
-/* Accesibilidad: Foco visible para navegación con teclado */
+/* Focus visible */
 :focus-visible {
-    outline: 3px solid var(--azul-profundo);
-    outline-offset: 2px;
-    border-radius: 4px;
+  outline: 3px solid var(--oro-destacado);
+  outline-offset: 2px;
+}
+
+/* 2. Variables CSS Globales */
+
+:root {
+  /* Paleta general */
+  --rojo-revolucion: #CB1515;
+  --azul-profundo: #002A8F;
+  --blanco-puro: #FFFFFF;
+  --negro-tipografico: #000000;
+  --oro-destacado: #D4AF37;
+
+  /* Paleta Cómic */
+  --amarillo-comic: #FFD100;
+  --rojo-comic: #FF3C00;
+  --azul-comic: #00A2FF;
+  --negro-comic: #000000;
+  --blanco-comic: #FFFFFF;
+
+  /* Paleta Biblioteca */
+  --madera-oscura: #4E3524;
+  --piel-libro: #D7C9AA;
+  --papel-crema: #F5F0E5;
+  --verde-biblioteca: #2E5E4E;
+  --bordeaux: #800020;
+
+  /* Paleta México */
+  --verde-mexico: #006847;
+  --rojo-mexico: #CE1126;
+  --blanco-mexico: #FFFFFF;
+  --terracota: #9E4A3F;
+  --turquesa: #40B5AD;
+
+  /* Breakpoints */
+  --bp-mobile: 360px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1200px;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+
+  /* Font Sizes */
+  --fs-base: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 2rem;
+  --fs-xxl: 3rem;
+}
+
+/* 3. Base utilities */
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* 4. Helpers for Accessibility */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  border: 0 !important;
+}
+
+/* 5. Alto Contraste */
+
+/* Se activa agregando la clase `high-contrast` al <body> */
+
+body.high-contrast {
+  background-color: black;
+  color: white;
+}
+
+body.high-contrast a, body.high-contrast a:visited {
+  color: var(--oro-destacado);
+  text-decoration: underline;
+}
+
+body.high-contrast * {
+  background-color: transparent !important;
+  border-color: yellow !important;
+  box-shadow: none !important;
+}
+
+/* 6. Importación TailwindCSS (puede ajustarse o eliminarse según tu setup) */
+
+@import "https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/base.min.css";
+
+/* 7. Overrides para compatibilidad y tema personalizado */
+
+@layer base {
+  /* Evitar conflictos con Tailwind sobre body, html */
+  html {
+    scroll-behavior: smooth;
+    font-size: var(--fs-base);
+    font-family: "Open Sans", sans-serif;
+    color: var(--negro-tipografico);
+    background-color: var(--blanco-puro);
+  }
+
+  body {
+    margin: 0;
+  }
 }
