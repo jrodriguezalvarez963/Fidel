@@ -1,77 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conmemoración 99° Natalicio de Fidel Castro</title>
+  <meta name="description" content="Página conmemorativa del 99° natalicio de Fidel Castro que explora su vida, legado y vínculo con México." />
+  <!-- Google Fonts: Montserrat (700) y Open Sans (400) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&display=swap" 
+    rel="stylesheet" 
+  />
+  <link rel="stylesheet" href="css/home.css" />
+  <script src="js/main.js" defer></script>
 
-    <title>Fidel Castro: 99 Años de Historia</title>
-    <meta name="description" content="Página conmemorativa del 99° natalicio de Fidel Castro, explorando su vida, su legado y su impacto en la historia.">
-    <meta name="keywords" content="Fidel Castro, Cuba, Revolución Cubana, Historia, Socialismo, México">
-    
-    <meta property="og:title" content="Fidel Castro: 99 Años de Historia">
-    <meta property="og:description" content="Un recorrido interactivo por la vida y el pensamiento de una figura clave del siglo XX.">
-    <meta property="og:image" content="https://tu-dominio.github.io/fidel-castro-89aniversario/assets/images/photos/fidel-hero-og.jpg"> <meta property="og:url" content="https://tu-dominio.github.io/fidel-castro-89aniversario/">
-    <meta property="og:type" content="website">
-
-    <link rel="icon" href="assets/icons/revolucion/estrella-26.svg" type="image/svg+xml">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/home.css">
+  <!-- Schema.org JSON-LD para evento histórico -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Conmemoración 99° Natalicio de Fidel Castro",
+    "startDate": "2024-08-13",
+    "location": {
+      "@type": "Place",
+      "name": "Sitio Web Conmemorativo Fidel Castro"
+    },
+    "description": "Página conmemorativa que explora la vida, legado y vínculo histórico de Fidel Castro con México."
+  }
+  </script>
 </head>
+<body>
+  <header role="banner" class="site-header">
+    <div class="container header-container">
+      <img 
+        src="assets/icons/revolucion/estrella-26.svg" 
+        alt="Logo conmemorativo Estrella de la Revolución" 
+        class="logo-pulsante"
+        width="120" height="120"
+        aria-hidden="true"
+      />
+      <h1 class="site-title">99° Natalicio de Fidel Castro</h1>
+    </div>
 
-<body class="bg-white text-black">
+    <nav role="navigation" aria-label="Menú principal" class="main-nav">
+      <ul>
+        <li><a href="curiosidades.html" tabindex="0">Curiosidades</a></li>
+        <li><a href="analisis.html" tabindex="0">Análisis</a></li>
+        <li><a href="mexico.html" tabindex="0">México</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <header class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-sm shadow-md">
-        <div class="container mx-auto px-4 flex justify-between items-center h-16">
-            <a href="index.html" class="font-montserrat text-lg font-bold text-black">Fidel 89</a>
-            <nav id="nav-menu">
-                <ul class="hidden md:flex space-x-6">
-                    <li><a href="curiosidades.html" class="nav-link">Curiosidades</a></li>
-                    <li><a href="analisis.html" class="nav-link">Análisis</a></li>
-                    <li><a href="mexico.html" class="nav-link">México</a></li>
-                </ul>
-            </nav>
-            <button id="hamburger-btn" class="md:hidden z-50" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-4 6h4"></path></svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white shadow-lg">
-             <ul class="flex flex-col items-center py-4">
-                <li><a href="curiosidades.html" class="block py-2 text-lg">Curiosidades</a></li>
-                <li><a href="analisis.html" class="block py-2 text-lg">Análisis</a></li>
-                <li><a href="mexico.html" class="block py-2 text-lg">México</a></li>
-            </ul>
-        </div>
-    </header>
+  <main id="content" role="main" class="main-content container">
+    <section aria-labelledby="bienvenida-title" class="bienvenida">
+      <h2 id="bienvenida-title" tabindex="0">Bienvenida al 99° Natalicio de Fidel Castro</h2>
+      <p>
+        Te damos la bienvenida al sitio dedicado a conmemorar el <strong>99° natalicio de Fidel Castro</strong>, una figura emblemática de la historia contemporánea latinoamericana.  
+        Este espacio está concebido para explorar su vida, legado y pensamiento a través de secciones cuidadosamente organizadas que presentan curiosidades, análisis filosóficos y su estrecha relación con México.
+      </p>
+      <p>
+        Navega y descubre contenido basado en textos reales, discursos históricos y reflexiones profundas que ilustran la complejidad de su figura y su impacto en la política y cultura regional.  
+        La página está diseñada para ofrecer una experiencia accesible, clara y agradable, con un enfoque respectuoso y académico.
+      </p>
+      <nav aria-label="Navegación principal de secciones" class="section-buttons">
+        <a href="curiosidades.html" class="btn btn-primary" aria-label="Ir a Curiosidades sobre Fidel Castro">Curiosidades</a>
+        <a href="analisis.html" class="btn btn-primary" aria-label="Ir al Análisis de discursos y filosofía">Análisis</a>
+        <a href="mexico.html" class="btn btn-primary" aria-label="Ir a la sección sobre México y Fidel Castro">México</a>
+      </nav>
+    </section>
+  </main>
 
-    <main id="home-hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div class="waving-flag-bg"></div>
-        <div class="text-center z-10 p-4">
-            <img src="assets/icons/revolucion/estrella-26.svg" alt="Estrella del 26 de Julio" id="pulsing-star" class="w-24 h-24 md:w-32 md:h-32 mx-auto mb-8">
-            <h1 class="font-montserrat text-4xl md:text-6xl font-bold text-black mb-4">
-                "Condenadme, no importa.
-            </h1>
-            <p class="font-opensans text-xl md:text-2xl text-gray-800 mb-12">
-                La historia me absolverá."
-            </p>
-            <a href="analisis.html" class="revolutionary-button">
-                Explorar su Pensamiento
-            </a>
-        </div>
-        <div class="golden-stars-bg"></div>
-    </main>
-
-    <footer class="bg-gray-100 py-4 text-center text-sm text-gray-600">
-        <p>&copy; 2025 | Un proyecto conmemorativo desarrollado con HTML, CSS y JS.</p>
-    </footer>
-
-    <script src="js/main.js"></script>
+  <footer role="contentinfo" class="site-footer container">
+    <p tabindex="0">&copy; 2024 Sitio Conmemorativo Fidel Castro. Todos los derechos reservados.</p>
+  </footer>
 
 </body>
 </html>
