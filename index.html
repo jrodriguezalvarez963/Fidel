@@ -69,11 +69,17 @@
         <a href="mexico.html" class="btn btn-primary" aria-label="Ir a la sección sobre México y Fidel Castro">México</a>
       </nav>
     </section>
-  </main>
 
-  <footer role="contentinfo" class="site-footer container">
-    <p tabindex="0">&copy; 2024 Sitio Conmemorativo Fidel Castro. Todos los derechos reservados.</p>
-  </footer>
+    <!-- SECCIÓN DE COMENTARIOS CON AIRTABLE -->
+    <section id="comentarios" aria-label="Sección de comentarios de usuarios" style="margin-top: 4rem;">
+      <h2>Comentarios</h2>
 
-</body>
-</html>
+      <!-- Formulario para nuevos comentarios -->
+      <form id="form-comentario" aria-describedby="form-instrucciones" novalidate>
+        <p id="form-instrucciones">Comparte tu opinión. Los campos <strong>Nombre</strong> y <strong>Comentario</strong> son obligatorios.</p>
+
+        <label for="input-nombre">Nombre</label><br />
+        <input type="text" id="input-nombre" name="nombre" required minlength="2" aria-required="true" autocomplete="name" /><br />
+
+        <label for="input-correo">Correo (opcional)</label><br />
+        <input type="email" id="input-correo" name="correo" autocomplete
