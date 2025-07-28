@@ -1,117 +1,279 @@
-/* ==========================================================================
-   Animaciones Clave
-   ========================================================================== */
+/* css/home.css */
 
-/* 1. Pulsación de la Estrella */
+/* Variables de color específicas para esta página */
+:root {
+  --color-rojo-revolucion: #CB1515;
+  --color-azul-profundo: #002A8F;
+  --color-blanco-puro: #FFFFFF;
+  --color-negro-tipografico: #000000;
+  --color-oro-destacado: #D4AF37;
+
+  --fs-base: 16px;
+  --fs-large: 2rem;
+  --fs-medium: 1.25rem;
+  --fs-small: 0.875rem;
+
+  --bp-mobile: 360px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1200px;
+}
+
+/* Reset y box-sizing base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: var(--fs-base);
+  color: var(--color-negro-tipografico);
+  background-image: url('../assets/images/backgrounds/fondo-principal.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  min-height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Logo pulsante */
+.logo-pulsante {
+  width: 120px;
+  height: 120px;
+  animation: pulsar 2.5s ease-in-out infinite;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Animación pulsante para el logo */
 @keyframes pulsar {
-    0% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.8; }
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px var(--color-rojo-revolucion));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px var(--color-rojo-revolucion));
+  }
 }
 
-/* 2. Bandera Cubana Ondeando (textura sutil) */
-@keyframes wave {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Título del sitio */
+.site-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: var(--fs-large);
+  color: var(--color-rojo-revolucion);
+  user-select: none;
+  margin: 0;
 }
 
+/* NAVIGATION */
 
-/* ==========================================================================
-   Estilos de la Página Principal
-   ========================================================================== */
-
-#home-hero {
-    background: linear-gradient(to bottom, var(--blanco-puro), #F0F0F0);
+.main-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-/* Capa con el patrón de estrellas doradas */
-.golden-stars-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
+.main-nav a {
+  color: var(--color-azul-profundo);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: var(--fs-medium);
+  position: relative;
+  padding: 0.25rem 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.main-nav a:focus,
+.main-nav a:hover {
+  color: var(--color-rojo-revolucion);
+  outline: none;
+}
+
+/* Efecto "chispa" para hover en botones y enlaces */
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: var(--color-rojo-revolucion);
+  left: 0;
+  bottom: -4px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a:focus::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* MAIN SECTION */
+
+.main-content {
+  padding: 4rem 0 6rem;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Título bienvenida */
+.bienvenida h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--color-azul-profundo);
+  margin-bottom: 1rem;
+}
+
+/* Párrafos */
+.bienvenida p {
+  font-size: var(--fs-medium);
+  line-height: 1.6;
+  color: var(--color-negro-tipografico);
+  margin-bottom: 2rem;
+}
+
+/* Botones navegación principales */
+.section-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.section-buttons .btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: var(--color-rojo-revolucion);
+  color: var(--color-blanco-puro);
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  box-shadow: 0 0 15px var(--color-rojo-revolucion);
+  transition: background-color 0.3s ease, box-shadow 0.4s ease;
+}
+
+/* Botón efecto "chispa" */
+.section-buttons .btn:hover,
+.section-buttons .btn:focus {
+  background-color: var(--color-oro-destacado);
+  box-shadow:
+    0 0 10px var(--color-oro-destacado),
+    0 0 20px var(--color-oro-destacado),
+    0 0 30px var(--color-oro-destacado);
+  outline: none;
+  color: var(--color-negro-tipografico);
+}
+
+/* Accessible focus outline */
+.section-buttons .btn:focus-visible {
+  outline: 3px solid var(--color-azul-profundo);
+  outline-offset: 3px;
+}
+
+/* FOOTER */
+
+.site-footer {
+  text-align: center;
+  font-size: var(--fs-small);
+  padding: 2rem 1rem;
+  color: var(--color-azul-profundo);
+  background-color: rgba(255, 255, 255, 0.9);
+  user-select: none;
+}
+
+/* Responsive rules: mobile-first */
+
+/* Navegación en column mobile */
+@media (max-width: 480px) {
+  .main-nav ul {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .section-buttons {
+    flex-direction: column;
+  }
+
+  .section-buttons .btn {
     width: 100%;
-    height: 100%;
-    background-image: url('../assets/decorations/stars-pattern.png'); /* Asegúrate de tener este asset */
-    background-repeat: repeat;
-    opacity: 0.1;
-    z-index: 1;
+    padding: 1rem 0;
+  }
+
+  .header-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .site-title {
+    font-size: 1.75rem;
+  }
 }
 
-/* Capa con la animación de la bandera */
-.waving-flag-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../assets/images/backgrounds/cuban-flag-texture.png'); /* Asegúrate de tener este asset */
-    background-size: cover;
-    opacity: 0.05;
-    animation: wave 40s linear infinite;
-    z-index: 2;
+/* Tablet and up */
+@media (min-width: 768px) {
+  .main-nav ul {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .site-title {
+    font-size: 2.5rem;
+  }
+
+  .section-buttons {
+    gap: 2rem;
+  }
 }
 
-/* Aplicar la animación a la estrella */
-#pulsing-star {
-    animation: pulsar 3s infinite ease-in-out;
-    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
-    will-change: transform, opacity; /* Optimización */
+/* Desktop large */
+@media (min-width: 1200px) {
+  .main-content {
+    max-width: 900px;
+  }
+
+  .section-buttons .btn {
+    padding: 1.25rem 3rem;
+    font-size: 1.2rem;
+  }
 }
 
-/* Tipografía específica de la Home */
-#home-hero h1 {
-    font-family: var(--font-heading);
-    color: var(--negro-tipografico);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-#home-hero p {
-    font-family: var(--font-body);
-}
-
-/* Botón "Chispa Revolucionaria" */
-.revolutionary-button {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    color: var(--blanco-puro);
-    background-color: var(--rojo-revolucion);
-    border: 2px solid transparent;
-    border-radius: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    z-index: 1;
-}
-
-.revolutionary-button:hover {
-    color: var(--rojo-revolucion);
-    background-color: var(--blanco-puro);
-    border-color: var(--rojo-revolucion);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(203, 21, 21, 0.3);
-}
-
-/* Efecto de chispa */
-.revolutionary-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: var(--oro-destacado);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: all 0.5s ease;
-    z-index: -1;
-}
-
-.revolutionary-button:hover::after {
-    transform: translate(-50%, -50%) scale(75);
-    opacity: 0;
-}
