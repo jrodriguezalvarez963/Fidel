@@ -431,3 +431,162 @@ function initComentarios() {
 
 // Inicializa automáticamente cuando DOM listo
 document.addEventListener('DOMContentLoaded', initComentarios);
+
+// Ajusta BASE_ID y TABLE_COMENTARIOS con tus datos verdaderos
+const BASE_ID = 'app45M30CM1ccXTau';  // tu base id
+const TABLE_COMENTARIOS = 'pagf41O43clXr44HT'; // tabla comentarios en base
+const API_KEY = 'patju3fjNyKDBeCGp.68ab3d377eb0bbffeaeade69fedd53edbc3c8d3686bd66da85abfd9fc8a5251c';
+
+const AIRTABLE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_COMENTARIOS}`;
+const HEADERS = {
+  'Authorization': `Bearer ${API_KEY}`,
+  'Content-Type': 'application/json',
+};
+
+const formComentarios = document.getElementById('form-comentarios');
+const listaComentarios = document.getElementById('lista-comentarios');
+const mensajeError = document.getElementById('mensaje-error');
+const mensajeExito = document.getElementById('mensaje-exito');
+const inputNombre = document.getElementById('input-nombre');
+const textareaComentario = document.getElementById('textarea-comentario');
+
+async function getComentarios() {
+  try {
+    // ordena campo fecha por descendente, ajusta nombres campos si es necesario
+    const url = `${AIRTABLE_URL}?sort[0][field]=fecha&sort[0][direction]=desc`;
+    const res = await fetch(url, { headers: HEADERS });
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+    const data = await res.json();
+
+    return data.records.map(rec => ({
+      id: rec.id,
+      nombre: rec.fields.nombre || 'Anónimo',
+      comentario: rec.fields.comentario || '',
+      fecha: rec.fields.fecha || rec.createdTime,
+      likes: rec.fields.likes || 0,
+    }));
+  } catch (error) {
+    throw error;
+  }
+}
+
+function sanitizeText(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function addComentario({ nombre, comentario }) {
+  if (!nombre || !comentario) {
+    throw new Error('Nombre y comentario son requeridos');
+  }
+  const safeNombre = sanitizeText(nombre.trim());
+  const safeComentario = sanitizeText(comentario.trim());
+  const body = {
+    records: [{
+      fields: {
+        nombre: safeNombre,
+        comentario: safeComentario,
+        fecha: new Date().toISOString(),
+        likes: 0,
+      }
+    }]
+  };
+
+  const res = await fetch(AIRTABLE_URL, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Error al enviar: ${res.status} ${errText}`);
+  }
+  return res.json();
+}
+
+function mostrarError(texto) {
+  mensajeError.textContent = texto;
+  mensajeError.style.display = 'block';
+  mensajeExito.style.display = 'none';
+}
+
+function mostrarExito(texto) {
+  mensajeExito.textContent = texto;
+  mensajeExito.style.display = 'block';
+  mensajeError.style.display = 'none';
+}
+
+function limpiarMensajes() {
+  mensajeError.style.display = 'none';
+  mensajeExito.style.display = 'none';
+}
+
+function crearElementoComentario({ nombre, comentario, fecha, likes }) {
+  const li = document.createElement('li');
+  const fechaFormateada = fecha ? new Date(fecha).toLocaleDateString('es-ES', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  }) : '';
+
+  li.innerHTML = `
+    <p>${comentario}</p>
+    <p><strong>${nombre}</strong>${likes > 0 ? ` | ❤️ ${likes}` : ''} | <time datetime="${fecha}">${fechaFormateada}</time></p>
+  `;
+  return li;
+}
+
+async function renderComentarios() {
+  try {
+    limpiarMensajes();
+    listaComentarios.innerHTML = '';
+    const comentarios = await getComentarios();
+    if (comentarios.length === 0) {
+      listaComentarios.innerHTML = '<li>No hay comentarios aún.</li>';
+      return;
+    }
+    comentarios.forEach(c => {
+      listaComentarios.appendChild(crearElementoComentario(c));
+    });
+  } catch (err) {
+    mostrarError('No se pudieron cargar los comentarios. Intenta más tarde.');
+    console.error(err);
+  }
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  limpiarMensajes();
+  const nombre = inputNombre.value;
+  const comentario = textareaComentario.value;
+
+  if (!nombre.trim()) {
+    mostrarError('Por favor ingresa tu nombre.');
+    inputNombre.focus();
+    return;
+  }
+  if (!comentario.trim()) {
+    mostrarError('Por favor escribe un comentario.');
+    textareaComentario.focus();
+    return;
+  }
+  try {
+    await addComentario({ nombre, comentario });
+    mostrarExito('Comentario enviado con éxito.');
+    formComentarios.reset();
+    await renderComentarios();
+  } catch (e) {
+    mostrarError('Error al enviar el comentario. Intenta más tarde.');
+    console.error(e);
+  }
+}
+
+function initComentarios() {
+  if (!formComentarios) return;
+  formComentarios.addEventListener('submit', handleSubmit);
+  renderComentarios();
+  setInterval(renderComentarios, 120000); // refrescar cada 2 minutos
+}
+
+document.addEventListener('DOMContentLoaded', initComentarios);
+
