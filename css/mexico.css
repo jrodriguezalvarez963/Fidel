@@ -1,0 +1,304 @@
+/* mexico.css */
+
+/*
+  Estilos para la sección México - Arte Popular Digitalizado
+  - Paleta colores: verde nopal, rojo sangre, blanco puro, café tierra, turquesa
+  - Fondo con patrones inspirados en tejidos otomíes usando CSS Grid y SVG embebidos
+  - Animación papel picado usando pseudo-elementos y keyframes
+  - Alebrijes estilizados con clip-path y degradados que cambian color en hover
+  - Animación de sombras y vibración en elementos interactivos
+  - Tipografía sans serif humanista (Quicksand o Mulish), títulos grandes y aireados
+  - Media queries responsivos
+*/
+
+/* Variables de color */
+:root {
+  --verde-nopal: #006847;
+  --rojo-sangre: #CE1126;
+  --blanco-puro: #FFFFFF;
+  --cafe-tierra: #9E4A3F;
+  --turquesa: #40B5AD;
+  --negro: #000000;
+}
+
+/* Tipografía base */
+body {
+  font-family: 'Quicksand', 'Mulish', sans-serif;
+  background-color: var(--blanco-puro);
+  color: var(--negro);
+  margin: 0;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+/* Fondo con patrón inspirado en tejidos otomíes */
+/* Usamos CSS Grid para crear patrones repetitivos geométricos */
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  grid-gap: 8px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: var(--blanco-puro);
+  padding: 1rem;
+  position: relative;
+}
+
+/* Cada celda del patrón con fondo SVG embebido */
+.pattern-cell {
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  filter: saturate(1.2);
+  transition: filter 0.3s ease;
+}
+
+/* Ejemplos de patrones SVG embebidos con color por celda */
+/* Puedes repetir el patrón usando diferentes fondos SVG inline codificados en base64 */
+
+.pattern-cell:nth-child(odd) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="none"/><circle cx="30" cy="30" r="15" fill="%23006847"/><line x1="15" y1="15" x2="45" y2="45" stroke="%23CE1126" stroke-width="4"/></svg>');
+}
+.pattern-cell:nth-child(even) {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="none"/><rect x="15" y="15" width="30" height="30" fill="%2340B5AD" /><circle cx="30" cy="30" r="7" fill="%239E4A3F"/></svg>');
+}
+
+/* Animación papel picado con pseudo-elementos */
+/* Pseudo-elemento que simula piezas de papel picado animadas */
+
+.papel-picado {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 150px;
+  margin: 2rem auto;
+  overflow: visible;
+}
+
+.papel-picado::before,
+.papel-picado::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(90deg, var(--rojo-sangre) 10%, var(--turquesa) 50%, var(--rojo-sangre) 90%);
+  clip-path: polygon(
+    0% 100%, 8% 0%, 16% 100%, 24% 0%, 32% 100%,
+    40% 0%, 48% 100%, 56% 0%, 64% 100%, 72% 0%,
+    80% 100%, 88% 0%, 96% 100%, 100% 0%
+  );
+  animation: papelPicadoWave 4s ease-in-out infinite;
+  filter: drop-shadow(0 1px 0 #0002);
+}
+
+.papel-picado::after {
+  top: 25px;
+  background: linear-gradient(90deg, var(--verde-nopal) 10%, var(--cafe-tierra) 50%, var(--verde-nopal) 90%);
+  animation-delay: 2s;
+  opacity: 0.8;
+}
+
+/* Keyframes animación ondulación para papel picado */
+@keyframes papelPicadoWave {
+  0%, 100% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(10px) translateY(4px) rotate(3deg);
+  }
+}
+
+/* Alebrijes estilizados con clip-path y degradados */
+.alebrije {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, var(--rojo-sangre), var(--turquesa));
+  clip-path: polygon(
+    50% 0%, 65% 20%, 90% 20%, 70% 40%, 80% 60%,
+    60% 70%, 70% 90%, 50% 75%, 30% 90%, 40% 70%,
+    20% 60%, 30% 40%, 10% 20%, 35% 20%
+  );
+  margin: 1rem auto;
+  box-shadow: 0 0 10px var(--verde-nopal);
+  transition: background 0.5s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  will-change: background, box-shadow;
+}
+
+/* Cambia color y sombra al hacer hover */
+.alebrije:hover,
+.alebrije:focus {
+  background: linear-gradient(135deg, var(--turquesa), var(--cafe-tierra));
+  box-shadow: 0 0 20px var(--rojo-sangre);
+  outline: none;
+  transform: scale(1.05);
+}
+
+/* Animación vibración suave para alebrijes activos */
+@keyframes vibracion {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(1px, 1px) rotate(1deg); }
+  50% { transform: translate(-1px, 1px) rotate(-1deg); }
+  75% { transform: translate(1px, -1px) rotate(1deg); }
+}
+
+.alebrije-animada {
+  animation: vibracion 3s infinite ease-in-out;
+}
+
+/* Animación sombras para elementos interactivos como botones o cuadros */
+.interactivo {
+  transition: box-shadow 0.3s ease;
+  will-change: box-shadow;
+}
+
+.interactivo:hover,
+.interactivo:focus {
+  box-shadow: 0 0 12px var(--turquesa);
+  outline: none;
+  animation: vibracion 1.5s infinite ease-in-out;
+}
+
+/* Títulos grandes y aireados */
+h1, h2, h3 {
+  font-family: 'Quicksand', 'Mulish', sans-serif;
+  font-weight: 700;
+  color: var(--verde-nopal);
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* Párrafos */
+p {
+  font-size: 1rem;
+  color: var(--cafe-tierra);
+  margin-bottom: 1rem;
+}
+
+/* Enlaces estilizados */
+a {
+  color: var(--rojo-sangre);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  color: var(--turquesa);
+  outline: none;
+}
+
+/* Responsive Media Queries */
+
+/* Móvil */
+@media (max-width: 479px) {
+  .pattern-grid {
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    grid-gap: 5px;
+    padding: 0.5rem;
+  }
+
+  .pattern-cell {
+    width: 40px;
+    height: 40px;
+  }
+
+  .alebrije {
+    width: 100px;
+    height: 100px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 480px) and (max-width: 1023px) {
+  .pattern-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    grid-gap: 7px;
+    padding: 0.75rem;
+  }
+
+  .pattern-cell {
+    width: 50px;
+    height: 50px;
+  }
+
+  .alebrije {
+    width: 125px;
+    height: 125px;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .pattern-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    grid-gap: 8px;
+    padding: 1rem;
+  }
+
+  .pattern-cell {
+    width: 60px;
+    height: 60px;
+  }
+
+  .alebrije {
+    width: 150px;
+    height: 150px;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Comentarios importantes */
+/*
+  - Los patrones en .pattern-cell pueden ser personalizados con SVG embebido en base64 o inline.
+  - La animación papel picado se aplica usando pseudo-elementos en .papel-picado con ondas suaves.
+  - Los alebrijes usan clip-path para formas abstractas estilizadas y degradados para color vibrante.
+  - La animación vibración agrega dinamismo suave a elementos interactivos como .alebrije y .interactivo.
+  - Tipografía sans serif humanista asegura legibilidad y estilo moderno.
+*/
