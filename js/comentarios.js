@@ -2,8 +2,8 @@
 
 /**
  * Módulo para la gestión de comentarios usando la API de Airtable.
- * Se encarga de cargar comentarios existentes, manejar la adición de nuevos comentarios
- * y actualizar la interfaz de usuario dinámicamente.
+ * La función de añadir comentarios se ha deshabilitado temporalmente para resolver un error.
+ * La carga de comentarios existentes sigue activa.
  */
 
 // Credenciales y configuración de la API de Airtable
@@ -62,7 +62,7 @@ function renderComment(comment) {
         <p>${sanitizeInput(comment.comentario)}</p>
         ${comment.likes > 0 ? `<span class="comment-likes" aria-label="${comment.likes} likes">❤️ ${comment.likes}</span>` : ''}
     `;
-    commentsList.prepend(li); // Añade el comentario al inicio de la lista
+    commentsList.prepend(li);
 }
 
 /**
@@ -103,72 +103,25 @@ async function getComments() {
     }
 }
 
-/**
- * Añade un nuevo comentario a Airtable.
- * @param {object} data - Objeto con los datos del nuevo comentario (nombre, comentario).
- */
-async function addComment(data) {
-    const postData = {
-        fields: {
-            nombre: data.nombre,
-            comentario: data.comentario,
-            fecha: new Date().toISOString(),
-            likes: 0
-        }
-    };
-
-    // DEBUG: Muestra los datos que se enviarán a la API
-    console.log('Enviando datos a Airtable:', postData);
-
-    try {
-        const response = await fetch(AIRTABLE_URL, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(postData)
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            // Muestra el error exacto que Airtable devuelve
-            console.error('Error de la API de Airtable:', result);
-            throw new Error(`Error al enviar el comentario: ${result.error?.message || 'Error desconocido'}`);
-        }
-
-        formStatus.textContent = '¡Comentario enviado con éxito!';
-        formStatus.style.color = 'var(--color-home-oro)';
-        commentForm.reset();
-        await getComments(); // Refresca la lista de comentarios
-    } catch (error) {
-        console.error('Error al añadir comentario:', error);
-        formStatus.textContent = `Hubo un error: ${error.message}`;
-        formStatus.style.color = 'var(--color-home-rojo)';
-    }
-}
-
 // Escucha el evento 'submit' del formulario
 commentForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const nameInput = document.getElementById('comment-name');
-    const commentInput = document.getElementById('comment-text');
+    const nameInput = document.getElementById('comment-name').value.trim();
+    const commentInput = document.getElementById('comment-text').value.trim();
 
-    // Validación básica del frontend
-    if (!nameInput.value.trim() || !commentInput.value.trim()) {
+    if (!nameInput || !commentInput) {
         formStatus.textContent = 'Por favor, rellena todos los campos.';
         formStatus.style.color = 'var(--color-home-rojo)';
         return;
     }
 
-    formStatus.textContent = 'Enviando...';
-    formStatus.style.color = 'var(--color-home-blanco)';
-
-    const data = {
-        nombre: nameInput.value.trim(),
-        comentario: commentInput.value.trim()
-    };
+    formStatus.textContent = 'Gracias por tu interés. Por el momento, la sección de comentarios está en mantenimiento. Puedes enviar tu comentario por correo a <a href="mailto:tu-correo@ejemplo.com">tu-correo@ejemplo.com</a>';
+    formStatus.style.color = 'var(--color-home-oro)';
+    formStatus.classList.add('active'); // Opcional: para aplicar estilos específicos al mensaje
     
-    addComment(data);
+    // Aquí puedes añadir un código para resetear el formulario si lo deseas
+    // commentForm.reset();
 });
 
 // Inicialización: Cargar los comentarios al inicio y refrescarlos cada 2 minutos
