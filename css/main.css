@@ -1,0 +1,202 @@
+/* ==========================================================================
+   RESET CSS Y ESTILOS GLOBALES
+   ========================================================================== */
+
+/* Un reset moderno para una base consistente en todos los navegadores */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--color-texto-principal);
+    background-color: var(--color-fondo-principal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   VARIABLES CSS (Paletas de Colores)
+   ========================================================================== */
+
+:root {
+    /* Paleta Home: Minimalismo Revolucionario */
+    --color-home-rojo: #CB1515;
+    --color-home-azul: #002A8F;
+    --color-home-blanco: #FFFFFF;
+    --color-home-negro: #000000;
+    --color-home-oro: #D4AF37;
+    
+    /* Variables generales para la Home */
+    --color-texto-principal: var(--color-home-blanco);
+    --color-fondo-principal: var(--color-home-negro);
+
+    /* Paleta Curiosidades: Cómic Caricaturesco */
+    --color-comic-amarillo: #FFD100;
+    --color-comic-rojo: #FF3C00;
+    --color-comic-azul: #00A2FF;
+
+    /* Paleta Análisis: Biblioteca Académica */
+    --color-biblioteca-marron: #4E3524;
+    --color-biblioteca-beige: #D7C9AA;
+    --color-biblioteca-hueso: #F5F0E5;
+    --color-biblioteca-verde: #2E5E4E;
+    --color-biblioteca-burdeos: #800020;
+
+    /* Paleta México: Arte Popular Digitalizado */
+    --color-mexico-nopal: #006847;
+    --color-mexico-rojo-sangre: #CE1126;
+    --color-mexico-tierra: #9E4A3F;
+    --color-mexico-turquesa: #40B5AD;
+}
+
+/* ==========================================================================
+   HELPERS Y UTILIDADES
+   ========================================================================== */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Flexbox Helpers */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-container {
+    display: grid;
+}
+
+/* ==========================================================================
+   ACCESIBILIDAD Y PREFERENCIAS DEL USUARIO
+   ========================================================================== */
+
+/* Estilo para el enlace "saltar al contenido" */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-home-rojo);
+    color: var(--color-home-blanco);
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Estilos para modo de alto contraste */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-texto-principal: #FFFFFF;
+        --color-fondo-principal: #000000;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :root {
+        --color-home-rojo: #FF0000;
+        --color-home-azul: #0000FF;
+        --color-home-blanco: #FFFFFF;
+        --color-home-negro: #000000;
+        --color-home-oro: #FFFF00;
+    }
+}
+
+/* Deshabilitar transiciones y animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Estilos de foco para accesibilidad */
+:focus-visible {
+    outline: 2px solid var(--color-home-rojo);
+    outline-offset: 2px;
+}
+
+/* Ocultar contenido visualmente pero mantenerlo para lectores de pantalla */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* ==========================================================================
+   ESTILOS BASE PARA ELEMENTOS COMUNES
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Anton', sans-serif;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-home-oro);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--color-home-rojo);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (BREAKPOINTS)
+   ========================================================================== */
+
+/* Móvil (hasta 767px) - Estilos por defecto */
+@media (min-width: 360px) {
+    /* Estilos específicos para móviles aquí */
+}
+
+/* Tablet (768px a 1199px) */
+@media (min-width: 768px) {
+    body {
+        font-size: 17px;
+    }
+}
+
+/* Desktop (1200px en adelante) */
+@media (min-width: 1200px) {
+    body {
+        font-size: 18px;
+    }
+}
