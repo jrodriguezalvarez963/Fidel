@@ -64,30 +64,6 @@
                 </a>
             </div>
         </section>
-
-        <section class="comments-section" aria-labelledby="comments-heading">
-            <h2 id="comments-heading">Deja un comentario</h2>
-            <form id="comment-form" class="comment-form" aria-live="polite">
-                <p class="form-status" role="alert"></p>
-                <div class="form-group">
-                    <label for="comment-name">Nombre:</label>
-                    <input type="text" id="comment-name" name="name" required aria-required="true" placeholder="Tu nombre">
-                </div>
-                <div class="form-group">
-                    <label for="comment-text">Comentario:</label>
-                    <textarea id="comment-text" name="comment" required aria-required="true" placeholder="Escribe tu comentario aquí"></textarea>
-                </div>
-                <button type="submit" class="submit-button">Enviar comentario</button>
-            </form>
-            
-            <div class="comments-list-container">
-                <h3>Comentarios de la comunidad</h3>
-                <ul id="comments-list" class="comments-list" role="log" aria-live="polite" aria-atomic="false">
-                    </ul>
-                <p id="loading-message">Cargando comentarios...</p>
-                <p id="error-message" role="alert" aria-live="assertive" class="hidden">No se pudieron cargar los comentarios.</p>
-            </div>
-        </section>
     </main>
 
     <footer class="main-footer" role="contentinfo">
@@ -95,6 +71,5 @@
     </footer>
 
     <script src="js/main.js" type="module"></script>
-    <script src="js/comentarios.js" type="module"></script>
-</body>
+    </body>
 </html>
