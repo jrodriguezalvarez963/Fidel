@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Página conmemorativa del 99° natalicio de Fidel Castro con diseño revolucionario y sistema de comentarios integrados." />
+  <title>99° Natalicio de Fidel Castro</title>
+
+  <!-- Vinculación a hojas de estilo principales -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/home.css" />
+
+  <!-- Fuentes recomendadas -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- HEADER principal -->
+  <header role="banner" aria-label="Encabezado principal de la página">
+    <h1 tabindex="0" class="titulo-principal">
+      99° NATALICIO DE FIDEL CASTRO
+    </h1>
+    <p class="lema" tabindex="0">UNA REVOLUCIÓN SILENCIOSA QUE VIBRA</p>
+  </header>
+
+  <!-- MAIN con contenido central -->
+  <main role="main">
+    <!-- Sección estrella central animada -->
+    <section aria-label="Estrella central animada" class="seccion-estrella">
+      <div class="estrella-animada" aria-hidden="true"></div>
+    </section>
+
+    <!-- Fondo con líneas ondulantes animadas -->
+    <div aria-hidden="true" class="fondos-animados">
+      <div class="linea-ondulante linea1"></div>
+      <div class="linea-ondulante linea2"></div>
+      <div class="linea-ondulante linea3"></div>
+    </div>
+
+    <!-- Galería visual que muestra un primer vistazo de otras secciones -->
+    <section aria-label="Galería de secciones" class="galeria-secciones">
+      <article class="cuadro-seccion curiosidades" tabindex="0" aria-labelledby="titulo-curiosidades" role="link" onclick="location.href='curiosidades.html'">
+        <h2 id="titulo-curiosidades">Curiosidades</h2>
+        <div class="viñeta-abstracta" aria-hidden="true"></div>
+        <p>Descubre hechos sorprendentes con estilo cómic caricaturesco.</p>
+        <button aria-label="Ir a Curiosidades">Explorar</button>
+      </article>
+
+      <article class="cuadro-seccion analisis" tabindex="0" aria-labelledby="titulo-analisis" role="link" onclick="location.href='analisis.html'">
+        <h2 id="titulo-analisis">Análisis</h2>
+        <div class="fondo-biblioteca" aria-hidden="true"></div>
+        <p>Sumérgete en el conocimiento con nuestra biblioteca académica digital.</p>
+        <button aria-label="Ir a Análisis">Leer más</button>
+      </article>
+
+      <article class="cuadro-seccion mexico" tabindex="0" aria-labelledby="titulo-mexico" role="link" onclick="location.href='mexico.html'">
+        <h2 id="titulo-mexico">México</h2>
+        <div class="patron-geometrico" aria-hidden="true"></div>
+        <p>Vibra con el arte popular digitalizado y patrones tradicionales mexicanos.</p>
+        <button aria-label="Ir a México">Conocer</button>
+      </article>
+    </section>
+
+    <!-- Sección de comentarios con formulario de Airtable y lista dinámica -->
+    <section aria-labelledby="comentarios-titulo" class="seccion-comentarios">
+      <h2 id="comentarios-titulo" tabindex="0">Comentarios</h2>
+
+      <form id="form-comentarios" aria-describedby="form-instrucciones" novalidate>
+        <p id="form-instrucciones" class="visually-hidden">Formulario para dejar nombre y comentario</p>
+        <label for="input-nombre">Nombre</label>
+        <input type="text" id="input-nombre" name="nombre" required aria-required="true" autocomplete="name" />
+
+        <label for="textarea-comentario">Comentario</label>
+        <textarea id="textarea-comentario" name="comentario" rows="4" required aria-required="true"></textarea>
+
+        <button type="submit" aria-label="Enviar comentario">Enviar</button>
+
+        <div id="mensaje-error" role="alert" aria-live="assertive" class="mensaje-error" aria-hidden="true"></div>
+        <div id="mensaje-exito" role="status" aria-live="polite" class="mensaje-exito" aria-hidden="true"></div>
+      </form>
+
+      <ul id="lista-comentarios" aria-live="polite" aria-relevant="additions" tabindex="0" class="lista-comentarios">
+        <!-- Los comentarios con likes se cargarán dinámicamente aquí -->
+      </ul>
+    </section>
+  </main>
+
+  <!-- FOOTER con créditos -->
+  <footer role="contentinfo" aria-label="Pie de página con créditos">
+    <p tabindex="0">&copy; 2025 - Conmemoración 99° Natalicio de Fidel Castro</p>
+  </footer>
+
+  <!-- Scripts JS -->
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/comentarios.js"></script>
+
+  <!-- Comentarios para desarrolladores -->
+  <!--
+    - Animaciones estrella y líneas en css/home.css
+    - Cuadros de secciones con animaciones y texturas generativas propias de cada sección
+    - Sistema de comentarios con likes gestionado por js/comentarios.js y airtable API
+  -->
+</body>
+
+</html>
