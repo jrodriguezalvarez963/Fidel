@@ -1,37 +1,38 @@
 // main.js
 
 /**
- * Módulo principal con funciones globales para navegación y accesibilidad
- * - Manejo de menú responsive
- * - Helpers para gestión de foco y navegación por teclado
- * - Detección y respeto de preferencia 'prefers-reduced-motion'
- * - Código modular, limpio y sin dependencias externas
+ * Módulo principal para funciones globales de navegación y accesibilidad
+ * - Manejo de menú responsive con botón toggle y soporte teclado
+ * - Gestión de foco accesible para mejorar navegación con teclado
+ * - Detección y respeto de preferencia de usuario para reducir animaciones
+ * - Código modular ES6, claro, sin dependencias externas
  */
 
+/**
+ * Clase para control del menú responsive
+ * Gestiona apertura/cierre del menú y accesibilidad ARIA
+ */
 class Navigation {
   constructor() {
     this.menuButton = document.querySelector('.menu-toggle');
     this.menu = document.querySelector('.nav-menu');
-    this.bindEvents();
+    this.init();
   }
 
-  bindEvents() {
-    if (this.menuButton && this.menu) {
-      this.menuButton.addEventListener('click', () => this.toggleMenu());
-      // Mejor soporte teclado: cerrar con ESC y navegación con tab
-      document.addEventListener('keydown', (e) => this.handleKeydown(e));
-    }
+  init() {
+    if (!this.menuButton || !this.menu) return;
+    this.menuButton.addEventListener('click', () => this.toggleMenu());
+    document.addEventListener('keydown', (e) => this.handleKeydown(e));
   }
 
   toggleMenu() {
-    const expanded = this.menuButton.getAttribute('aria-expanded') === 'true' || false;
-    this.menuButton.setAttribute('aria-expanded', !expanded);
+    const expanded = this.menuButton.getAttribute('aria-expanded') === 'true';
+    this.menuButton.setAttribute('aria-expanded', String(!expanded));
     this.menu.classList.toggle('is-open');
   }
 
   handleKeydown(event) {
     if (!this.menu.classList.contains('is-open')) return;
-    // Cerrar menú con ESC
     if (event.key === 'Escape' || event.key === 'Esc') {
       this.menuButton.setAttribute('aria-expanded', 'false');
       this.menu.classList.remove('is-open');
@@ -41,25 +42,27 @@ class Navigation {
 }
 
 /**
- * Helper para la gestión de foco accesible
- * Permite manejar el foco con teclado y visualización clara del elemento activo
+ * Añade/remueve clase para foco visible, facilitando estilos para navegación con teclado
  */
 function setupFocusVisible() {
-  function handleFocus(event) {
-    if (event.target.matches('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')) {
+  function onFocus(event) {
+    if (
+      event.target.matches(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ) {
       event.target.classList.add('focus-visible');
     }
   }
-  function handleBlur(event) {
+  function onBlur(event) {
     event.target.classList.remove('focus-visible');
   }
-  document.addEventListener('focusin', handleFocus);
-  document.addEventListener('focusout', handleBlur);
+  document.addEventListener('focusin', onFocus);
+  document.addEventListener('focusout', onBlur);
 }
 
 /**
- * Detecta si el usuario prefiere reducir animaciones usando matchMedia
- * @returns {boolean} true si prefiere reducir animaciones, false de lo contrario
+ * Devuelve true si el usuario prefiere reducir animaciones según media query
  */
 function prefersReducedMotion() {
   if (!window.matchMedia) return false;
@@ -67,49 +70,47 @@ function prefersReducedMotion() {
 }
 
 /**
- * Ejecuta función callback según preferencia de movimiento del usuario
- * Permite activar o desactivar animaciones JS o CSS en runtime
- * @param {Function} onReduce Motion enabled, callback sin animación
- * @param {Function} onFullMotion enabled, callback animado
+ * Gestiona callbacks para comportamiento según preferencia de animación del usuario
+ * @param {Function} onReduce accion cuando se prefiere reducir animaciones
+ * @param {Function} onFull accion cuando se permiten animaciones completas
  */
 function handleMotionPreference(onReduce, onFull) {
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const applyPreference = () => {
+  function applyPreference() {
     if (mediaQuery.matches) {
       onReduce();
     } else {
       onFull();
     }
-  };
+  }
   applyPreference();
   mediaQuery.addEventListener('change', applyPreference);
 }
 
 /**
- * Inicializa el módulo principal
+ * Función principal que inicializa las funcionalidades globales
  */
 export function initMain() {
-  // Inicializar navegación responsive si existe menú
+  // Inicializar navegación responsive
   new Navigation();
 
-  // Configurar manejo visual de foco accesible
+  // Configurar enfoque accesible
   setupFocusVisible();
 
-  // Ejemplo de uso: Deshabilitar animaciones JS si prefiere reduce motion
+  // Detectar preferencia para reducir animaciones y ajustar UI o JS
   handleMotionPreference(
     () => {
-      // Reducir animaciones: deshabilitar o pausar animaciones JS aquí si se usan
       document.body.classList.add('reduce-motion');
-      console.log('Modo reducción de movimiento activado');
+      // Aquí puedes desactivar animaciones JS adicionales si hay
+      console.log('Preferencia de animación reducida activada');
     },
     () => {
-      // Activar animaciones normales
       document.body.classList.remove('reduce-motion');
-      console.log('Modo animaciones activado');
+      // Reactivar animaciones
+      console.log('Preferencia de animaciones normales activada');
     }
   );
 }
 
-// Auto-inicialización al importar este módulo
-// Se puede comentar si se quiere iniciar explícitamente desde otro script
+// Ejecutar inicialización al cargar DOM
 document.addEventListener('DOMContentLoaded', initMain);
