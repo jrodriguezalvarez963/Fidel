@@ -19,6 +19,8 @@ const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.BASE_ID}/${A
 const commentsList = document.getElementById('comments-list');
 const commentForm = document.getElementById('comment-form');
 const formStatus = commentForm.querySelector('.form-status');
+const loadingMessage = document.getElementById('loading-message');
+const errorMessage = document.getElementById('error-message');
 
 // Headers de la petición API
 const headers = {
@@ -68,17 +70,17 @@ function renderComment(comment) {
  */
 async function getComments() {
     commentsList.innerHTML = '';
-    document.getElementById('loading-message').style.display = 'block';
-    document.getElementById('error-message').style.display = 'none';
+    loadingMessage.style.display = 'block';
+    errorMessage.style.display = 'none';
 
     try {
         const response = await fetch(`${AIRTABLE_URL}?view=Grid%20view&sort%5B0%5D%5Bfield%5D=fecha&sort%5B0%5D%5Bdirection%5D=desc`, { headers });
         if (!response.ok) {
-            throw new Error('Error al obtener los comentarios.');
+            throw new Error(`HTTP Error! Status: ${response.status} - ${response.statusText}`);
         }
         const data = await response.json();
         
-        if (data.records.length > 0) {
+        if (data.records && data.records.length > 0) {
             data.records.forEach(record => {
                 const fields = record.fields;
                 renderComment({
@@ -93,10 +95,11 @@ async function getComments() {
         }
         
     } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('error-message').style.display = 'block';
+        console.error('Error al obtener comentarios:', error);
+        errorMessage.textContent = 'No se pudieron cargar los comentarios. Revisa la consola para más detalles.';
+        errorMessage.style.display = 'block';
     } finally {
-        document.getElementById('loading-message').style.display = 'none';
+        loadingMessage.style.display = 'none';
     }
 }
 
@@ -114,6 +117,9 @@ async function addComment(data) {
         }
     };
 
+    // DEBUG: Muestra los datos que se enviarán a la API
+    console.log('Enviando datos a Airtable:', postData);
+
     try {
         const response = await fetch(AIRTABLE_URL, {
             method: 'POST',
@@ -121,17 +127,21 @@ async function addComment(data) {
             body: JSON.stringify(postData)
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-            throw new Error('Error al enviar el comentario.');
+            // Muestra el error exacto que Airtable devuelve
+            console.error('Error de la API de Airtable:', result);
+            throw new Error(`Error al enviar el comentario: ${result.error?.message || 'Error desconocido'}`);
         }
 
         formStatus.textContent = '¡Comentario enviado con éxito!';
         formStatus.style.color = 'var(--color-home-oro)';
         commentForm.reset();
-        getComments(); // Refresca la lista de comentarios
+        await getComments(); // Refresca la lista de comentarios
     } catch (error) {
-        console.error('Error:', error);
-        formStatus.textContent = 'Hubo un error al enviar tu comentario. Inténtalo de nuevo.';
+        console.error('Error al añadir comentario:', error);
+        formStatus.textContent = `Hubo un error: ${error.message}`;
         formStatus.style.color = 'var(--color-home-rojo)';
     }
 }
