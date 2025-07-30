@@ -1,112 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Conmemoración 99° Natalicio de Fidel Castro</title>
-  <meta name="description" content="Página conmemorativa del 99° natalicio de Fidel Castro que explora su vida, legado y vínculo con México." />
-  <!-- Google Fonts: Montserrat (700) y Open Sans (400) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&display=swap" 
-    rel="stylesheet" 
-  />
+  <meta name="description" content="Página conmemorativa del 99° natalicio de Fidel Castro con diseño revolucionario y sistema de comentarios." />
+  <title>99° Natalicio de Fidel Castro</title>
+
+  <!-- CSS principales -->
+  <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/home.css" />
-  <script src="js/main.js" defer></script>
 
-  <!-- Schema.org JSON-LD para evento histórico -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    "name": "Conmemoración 99° Natalicio de Fidel Castro",
-    "startDate": "2024-08-13",
-    "location": {
-      "@type": "Place",
-      "name": "Sitio Web Conmemorativo Fidel Castro"
-    },
-    "description": "Página conmemorativa que explora la vida, legado y vínculo histórico de Fidel Castro con México."
-  }
-  </script>
+  <!-- Fuentes recomendadas (pueden reemplazarse o alojarse localmente para performance) -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
 </head>
-<body>
-  <header role="banner" class="site-header">
-    <div class="container header-container">
-      <img 
-        src="assets/icons/revolucion/estrella-26.svg" 
-        alt="Logo conmemorativo Estrella de la Revolución" 
-        class="logo-pulsante"
-        width="120" height="120"
-        aria-hidden="true"
-      />
-      <h1 class="site-title">99° Natalicio de Fidel Castro</h1>
-    </div>
 
-    <nav role="navigation" aria-label="Menú principal" class="main-nav">
-      <ul>
-        <li><a href="curiosidades.html" tabindex="0">Curiosidades</a></li>
-        <li><a href="analisis.html" tabindex="0">Análisis</a></li>
-        <li><a href="mexico.html" tabindex="0">México</a></li>
-      </ul>
-    </nav>
+<body>
+  <!-- HEADER principal -->
+  <header role="banner" aria-label="Encabezado principal de la página">
+    <h1 tabindex="0" class="titulo-principal">
+      99° NATALICIO DE FIDEL CASTRO
+    </h1>
+    <p class="lema" tabindex="0">UNA REVOLUCIÓN SILENCIOSA QUE VIBRA</p>
   </header>
 
-  <main id="content" role="main" class="main-content container">
-    <section aria-labelledby="bienvenida-title" class="bienvenida">
-      <h2 id="bienvenida-title" tabindex="0">Bienvenida al 99° Natalicio de Fidel Castro</h2>
-      <p>
-        Te damos la bienvenida al sitio dedicado a conmemorar el <strong>99° natalicio de Fidel Castro</strong>, una figura emblemática de la historia contemporánea latinoamericana.  
-        Este espacio está concebido para explorar su vida, legado y pensamiento a través de secciones cuidadosamente organizadas que presentan curiosidades, análisis filosóficos y su estrecha relación con México.
-      </p>
-      <p>
-        Navega y descubre contenido basado en textos reales, discursos históricos y reflexiones profundas que ilustran la complejidad de su figura y su impacto en la política y cultura regional.  
-        La página está diseñada para ofrecer una experiencia accesible, clara y agradable, con un enfoque respectuoso y académico.
-      </p>
-      <nav aria-label="Navegación principal de secciones" class="section-buttons">
-        <a href="curiosidades.html" class="btn btn-primary" aria-label="Ir a Curiosidades sobre Fidel Castro">Curiosidades</a>
-        <a href="analisis.html" class="btn btn-primary" aria-label="Ir al Análisis de discursos y filosofía">Análisis</a>
-        <a href="mexico.html" class="btn btn-primary" aria-label="Ir a la sección sobre México y Fidel Castro">México</a>
-      </nav>
+  <!-- MAIN con contenido central -->
+  <main role="main">
+    <!-- Sección de animación estrella central -->
+    <section aria-label="Estrella central animada" class="seccion-estrella">
+      <!-- Aquí la estrella será generada y animada con CSS/JS -->
+      <div class="estrella-animada" aria-hidden="true"></div>
     </section>
 
-    <!-- SECCIÓN DE COMENTARIOS INTEGRADA -->
-    <section id="comentarios" aria-label="Sección de comentarios de usuarios" style="margin-top: 4rem;">
-      <h2>Comentarios</h2>
+    <!-- Fondo con líneas ondulantes animadas -->
+    <div aria-hidden="true" class="fondos-animados">
+      <!-- Elementos generados con CSS para las líneas -->
+      <div class="linea-ondulante linea1"></div>
+      <div class="linea-ondulante linea2"></div>
+      <div class="linea-ondulante linea3"></div>
+    </div>
 
-      <!-- Formulario para nuevos comentarios -->
-      <form id="form-comentario" aria-describedby="form-instrucciones" novalidate>
-        <p id="form-instrucciones">Comparte tu opinión. Los campos <strong>Nombre</strong> y <strong>Comentario</strong> son obligatorios.</p>
+    <!-- Sección de comentarios con formulario y lista -->
+    <section aria-labelledby="comentarios-titulo" class="seccion-comentarios">
+      <h2 id="comentarios-titulo" tabindex="0">Comentarios</h2>
 
-        <label for="input-nombre">Nombre</label><br />
-        <input type="text" id="input-nombre" name="nombre" required minlength="2" aria-required="true" autocomplete="name" /><br />
+      <!-- Formulario de comentarios -->
+      <form id="form-comentarios" aria-describedby="form-instrucciones" novalidate>
+        <p id="form-instrucciones" class="visually-hidden">Formulario para dejar nombre y comentario</p>
+        <label for="input-nombre">Nombre</label>
+        <input type="text" id="input-nombre" name="nombre" required aria-required="true" autocomplete="name" />
 
-        <label for="input-correo">Correo (opcional)</label><br />
-        <input type="email" id="input-correo" name="correo" autocomplete="email" placeholder="ejemplo@correo.com" /><br />
+        <label for="textarea-comentario">Comentario</label>
+        <textarea id="textarea-comentario" name="comentario" rows="4" required aria-required="true"></textarea>
 
-        <label for="input-comentario">Comentario</label><br />
-        <textarea id="input-comentario" name="comentario" required minlength="5" rows="4" aria-required="true" ></textarea><br />
+        <button type="submit" aria-label="Enviar comentario">Enviar</button>
 
-        <button type="submit" id="btn-enviar" disabled>Enviar</button>
+        <div id="mensaje-error" role="alert" aria-live="assertive" class="mensaje-error" aria-hidden="true"></div>
+        <div id="mensaje-exito" role="status" aria-live="polite" class="mensaje-exito" aria-hidden="true"></div>
       </form>
 
-      <p id="contador-comentarios" aria-live="polite" aria-atomic="true" style="margin-top: 1rem;"></p>
-
-      <!-- Contenedor para mostrar comentarios -->
-      <div id="lista-comentarios" role="list" tabindex="0" aria-label="Lista de comentarios publicados" style="margin-top: 1rem;">
-        <!-- Comentarios se cargan dinámicamente aquí -->
-      </div>
+      <!-- Lista dinámica donde se cargarán los comentarios -->
+      <ul id="lista-comentarios" aria-live="polite" aria-relevant="additions" tabindex="0" class="lista-comentarios">
+        <!-- Los comentarios se insertarán aquí desde js/comentarios.js -->
+      </ul>
     </section>
   </main>
 
-  <footer role="contentinfo" class="site-footer container">
-    <p tabindex="0">&copy; 2024 Sitio Conmemorativo Fidel Castro. Todos los derechos reservados.</p>
+  <!-- FOOTER con información de la página -->
+  <footer role="contentinfo" aria-label="Pie de página con créditos">
+    <p tabindex="0">&copy; 2025 - Conmemoración 99° Natalicio de Fidel Castro</p>
   </footer>
 
-  <!-- Importar DOMPurify para sanitización de inputs y outputs -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.3/purify.min.js" integrity="sha512-fNPAkVfRWUMs+iZVVuK0kw7Y8iNEdYqy32ndixeFY48pGxl9vkeCKW6yclFf3BT5++vXIYD6Sk2LQB+J7qtgbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- Importar scripts para integración con Airtable y manejo de comentarios -->
-  <script src="js/airtable.js" defer></script>
-  <script src="js/comentarios.js" type="module" defer></script>
+  <!-- Scripts JS -->
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/comentarios.js"></script>
+
+  <!-- Comentarios para desarrolladores -->
+  <!--
+    Animaciones y texturas definidas en CSS en css/home.css:
+    - Estrella central (div.estrella-animada) con pulsación.
+    - Líneas ondulantes fondo (div.linea-ondulante) con animación horizontal.
+    Scripts JS manejan interacciones del formulario y lista dinámica de comentarios.
+  -->
 </body>
+
 </html>
