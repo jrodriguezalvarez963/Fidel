@@ -1,126 +1,115 @@
-// js/main.js
+// main.js
 
 /**
- * Archivo de funcionalidades comunes para toda la web:
- * - Navegación y rutas relativas
- * - Modo alto contraste (toggle class)
- * - Inicializadores y helpers genéricos para accesibilidad
- * - Listeners globales para eventos comunes
- * 
- * Este script se debe cargar con defer para asegurar DOM listo.
+ * Módulo principal con funciones globales para navegación y accesibilidad
+ * - Manejo de menú responsive
+ * - Helpers para gestión de foco y navegación por teclado
+ * - Detección y respeto de preferencia 'prefers-reduced-motion'
+ * - Código modular, limpio y sin dependencias externas
  */
 
-document.addEventListener("DOMContentLoaded", () => {
-  initNavigation();
-  initContrastToggle();
-  initKeyboardNavigationFocus();
-  // Aquí más inicializaciones globales si se requieren
-});
+class Navigation {
+  constructor() {
+    this.menuButton = document.querySelector('.menu-toggle');
+    this.menu = document.querySelector('.nav-menu');
+    this.bindEvents();
+  }
 
-/**
- * Inicializa ajustes para manejo de rutas relativas y navegación
- */
-function initNavigation() {
-  // Detectar links internos y ajustar rutas relativas si fuera necesario
-  // Aquí se puede añadir lógica para SPA o para navegación con rutas base
-  
-  // Ejemplo simple: prevenir múltiples clicks en enlaces que cargan la misma página
-  const linksInternos = document.querySelectorAll("a[href^='./'], a[href^='../'], a[href^='/'], a[href^='#'], a[href^='index.html'], a[href^='curiosidades.html'], a[href^='analisis.html'], a[href^='mexico.html']");
-  linksInternos.forEach(link => {
-    link.addEventListener("click", e => {
-      // Si quieres agregar lógica para evitar recarga, aquí va
-      // Por ahora no hacemos nada y dejamos la navegación tradicional
-    });
-  });
-}
-
-/**
- * Maneja alternancia de modo alto contraste para accesibilidad
- * Se activa/desactiva con botón con id="toggle-contraste", si existe.
- */
-function initContrastToggle() {
-  const contrasteBtn = document.getElementById("toggle-contraste");
-  if (!contrasteBtn) return;
-
-  contrasteBtn.addEventListener("click", () => {
-    const body = document.body;
-    const modoActivo = body.classList.toggle("high-contrast");
-
-    // Guardar preferencia en localStorage para persistencia
-    try {
-      if (modoActivo) {
-        localStorage.setItem("modoContraste", "activo");
-      } else {
-        localStorage.removeItem("modoContraste");
-      }
-    } catch (e) {
-      // Silenciar error si almacenamiento no está disponible
-      console.warn("No se pudo guardar preferencia de contraste:", e);
+  bindEvents() {
+    if (this.menuButton && this.menu) {
+      this.menuButton.addEventListener('click', () => this.toggleMenu());
+      // Mejor soporte teclado: cerrar con ESC y navegación con tab
+      document.addEventListener('keydown', (e) => this.handleKeydown(e));
     }
-  });
+  }
 
-  // Al cargar, aplicar modo contraste si estaba activo previamente
-  try {
-    const modoGuardado = localStorage.getItem("modoContraste");
-    if (modoGuardado === "activo") {
-      document.body.classList.add("high-contrast");
+  toggleMenu() {
+    const expanded = this.menuButton.getAttribute('aria-expanded') === 'true' || false;
+    this.menuButton.setAttribute('aria-expanded', !expanded);
+    this.menu.classList.toggle('is-open');
+  }
+
+  handleKeydown(event) {
+    if (!this.menu.classList.contains('is-open')) return;
+    // Cerrar menú con ESC
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      this.menuButton.setAttribute('aria-expanded', 'false');
+      this.menu.classList.remove('is-open');
+      this.menuButton.focus();
     }
-  } catch (e) {
-    // Silenciar error
   }
 }
 
 /**
- * Helper para mejorar navegación y enfoque con teclado
- * Añade outline visible sólo si es navegación por teclado
+ * Helper para la gestión de foco accesible
+ * Permite manejar el foco con teclado y visualización clara del elemento activo
  */
-function initKeyboardNavigationFocus() {
-  let usarTeclado = false;
-
-  function manejarPrimeraTecla(e) {
-    if (e.key === "Tab") {
-      usarTeclado = true;
-      document.body.classList.add("using-keyboard");
-      window.removeEventListener("keydown", manejarPrimeraTecla);
+function setupFocusVisible() {
+  function handleFocus(event) {
+    if (event.target.matches('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')) {
+      event.target.classList.add('focus-visible');
     }
   }
-
-  function manejarClick() {
-    if (usarTeclado) {
-      usarTeclado = false;
-      document.body.classList.remove("using-keyboard");
-      window.addEventListener("keydown", manejarPrimeraTecla);
-    }
+  function handleBlur(event) {
+    event.target.classList.remove('focus-visible');
   }
-
-  window.addEventListener("keydown", manejarPrimeraTecla);
-  window.addEventListener("mousedown", manejarClick);
+  document.addEventListener('focusin', handleFocus);
+  document.addEventListener('focusout', handleBlur);
 }
 
 /**
- * Función genérica para obtener ruta relativa de un archivo dado,
- * con base en la ubicación actual.
- * Ejemplo: obtenerRutaRelativa("assets/images/logo.svg");
- * En este proyecto, las rutas se usan relativas al archivo HTML actual,
- * por lo que este helper puede adaptarse si migran a SPA.
- * 
- * Por defecto devuelve la ruta sin cambios.
- * @param {string} path Ruta relativa base
- * @returns {string} Ruta ajustada
+ * Detecta si el usuario prefiere reducir animaciones usando matchMedia
+ * @returns {boolean} true si prefiere reducir animaciones, false de lo contrario
  */
-function obtenerRutaRelativa(path) {
-  // Por ahora no hace ajuste; aquí se extendería lógica si fuera necesario
-  return path;
+function prefersReducedMotion() {
+  if (!window.matchMedia) return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 /**
- * Otros helpers globales y utilidades pueden agregarse abajo,
- * como manejo de modales, tooltips, ARIA live alerts, focus traps, etc.
+ * Ejecuta función callback según preferencia de movimiento del usuario
+ * Permite activar o desactivar animaciones JS o CSS en runtime
+ * @param {Function} onReduce Motion enabled, callback sin animación
+ * @param {Function} onFullMotion enabled, callback animado
  */
+function handleMotionPreference(onReduce, onFull) {
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const applyPreference = () => {
+    if (mediaQuery.matches) {
+      onReduce();
+    } else {
+      onFull();
+    }
+  };
+  applyPreference();
+  mediaQuery.addEventListener('change', applyPreference);
+}
 
-export {
-  initNavigation,
-  initContrastToggle,
-  initKeyboardNavigationFocus,
-  obtenerRutaRelativa,
-};
+/**
+ * Inicializa el módulo principal
+ */
+export function initMain() {
+  // Inicializar navegación responsive si existe menú
+  new Navigation();
+
+  // Configurar manejo visual de foco accesible
+  setupFocusVisible();
+
+  // Ejemplo de uso: Deshabilitar animaciones JS si prefiere reduce motion
+  handleMotionPreference(
+    () => {
+      // Reducir animaciones: deshabilitar o pausar animaciones JS aquí si se usan
+      document.body.classList.add('reduce-motion');
+      console.log('Modo reducción de movimiento activado');
+    },
+    () => {
+      // Activar animaciones normales
+      document.body.classList.remove('reduce-motion');
+      console.log('Modo animaciones activado');
+    }
+  );
+}
+
+// Auto-inicialización al importar este módulo
+// Se puede comentar si se quiere iniciar explícitamente desde otro script
+document.addEventListener('DOMContentLoaded', initMain);
