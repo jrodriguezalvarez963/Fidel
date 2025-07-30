@@ -1,253 +1,261 @@
-// js/comentarios.js
+// comentarios.js
 
 /**
- * Sistema de comentarios conectado a Airtable API.
- * Funcionalidades:
- * - Carga y renderiza comentarios en tiempo real.
- * - Validación y sanitización en tiempo real con DOMPurify.
- * - Animación slide-in al agregar comentario.
- * - Sistema simple de votación (likes) por comentario.
- * - Accesibilidad avanzada (ARIA roles, soporte teclado).
- * 
- * Requiere:
- * - DOMPurify (https://github.com/cure53/DOMPurify) cargado en la página.
- * - js/airtable.js con funciones fetchComentarios y addComentario.
+ * Módulo para gestionar la sección de comentarios integrados con Airtable
+ * - Conexión a Airtable usando API Key y tabla específica
+ * - Funciones async para obtener y agregar comentarios
+ * - Validación y sanitización básica para evitar XSS
+ * - Animaciones al mostrar/agregar comentarios
+ * - Manejo errores con mensajes visibles y logs
+ * - Refresco automático cada 2 minutos
+ * - Modular ES6 compatible con import/export
+ * - Integración con DOM: formulario y lista en index.html
  */
 
-/* IMPORTANTE:
- * Asegúrate que js/airtable.js está correctamente importado y exporta las funciones:
- * - fetchComentarios()
- * - addComentario()
- */
-import DOMPurify from 'dompurify';
-import { fetchComentarios, addComentario } from './airtable.js';
+const BASE_ID = 'app45M30CM1ccXTau';
+const TABLE_COMENTARIOS = 'tbl8l3mdaCeLMNMTd';
+const API_KEY = 'patju3fjNyKDBeCGp.68ab3d377eb0bbffeaeade69fedd53edbc3c8d3686bd66da85abfd9fc8a5251c';
 
-document.addEventListener('DOMContentLoaded', () => {
-  ComentariosApp.init();
-});
+// URL base Airtable API para comentarios
+const AIRTABLE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_COMENTARIOS}`;
 
-const ComentariosApp = (() => {
-  // Selectores y elementos
-  const formSelector = '#form-comentario';
-  const listSelector = '#lista-comentarios';
-  const countSelector = '#contador-comentarios';
-  const inputNombreSelector = '#input-nombre';
-  const inputCorreoSelector = '#input-correo';
-  const inputComentarioSelector = '#input-comentario';
-  const btnEnviarSelector = '#btn-enviar';
+// Encabezados para las peticiones fetch
+const HEADERS = {
+  'Authorization': `Bearer ${API_KEY}`,
+  'Content-Type': 'application/json',
+};
 
-  // Estado local
-  let comentariosCache = []; // Guarda los comentarios cargados
-  // Map de votos (idComentario -> conteo likes)
-  let votos = new Map();
+// ---------------------------------------
+// Función para obtener comentarios desde Airtable
+// Ordena por campo 'fecha' descendente (asumiendo campo creado_at o fecha disponible)
+// ---------------------------------------
+export async function getComentarios() {
+  try {
+    const url = `${AIRTABLE_URL}?sort[0][field]=fecha&sort[0][direction]=desc`;
+    const response = await fetch(url, { headers: HEADERS });
+    if (!response.ok) {
+      throw new Error(`Error al obtener comentarios: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
 
-  /** Inicializa la app */
-  async function init() {
-    // Cache elementos
-    this.form = document.querySelector(formSelector);
-    this.list = document.querySelector(listSelector);
-    this.countDisplay = document.querySelector(countSelector);
-    this.inputNombre = document.querySelector(inputNombreSelector);
-    this.inputCorreo = document.querySelector(inputCorreoSelector);
-    this.inputComentario = document.querySelector(inputComentarioSelector);
-    this.btnEnviar = document.querySelector(btnEnviarSelector);
+    // Mapear datos a formato utilizable
+    // Asumimos que los campos son: nombre (string), comentario (string), fecha (ISO string o fecha Airtable)
+    return data.records.map(record => ({
+      id: record.id,
+      nombre: record.fields.nombre || 'Anónimo',
+      comentario: record.fields.comentario || '',
+      fecha: record.fields.fecha || record.createdTime || '',
+    }));
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-    if (!this.form || !this.list) {
-      console.warn('No se encontraron elementos críticos de comentarios en DOM.');
+// ---------------------------------------
+// Función para sanitizar texto simple (escape básico de caracteres HTML)
+// ---------------------------------------
+function sanitizeText(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ---------------------------------------
+// Función para agregar un nuevo comentario a Airtable
+// data = { nombre: string, comentario: string }
+// ---------------------------------------
+export async function addComentario(data) {
+  const nombre = (data.nombre || '').trim();
+  const comentario = (data.comentario || '').trim();
+
+  // Validación básica: campos obligatorios
+  if (!nombre) throw new Error('El nombre es obligatorio.');
+  if (!comentario) throw new Error('El comentario no puede estar vacío.');
+
+  // Sanitización
+  const safeNombre = sanitizeText(nombre);
+  const safeComentario = sanitizeText(comentario);
+
+  const body = {
+    records: [
+      {
+        fields: {
+          nombre: safeNombre,
+          comentario: safeComentario,
+          fecha: new Date().toISOString(),
+        },
+      },
+    ],
+  };
+
+  try {
+    const response = await fetch(AIRTABLE_URL, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error al enviar comentario: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// ---------------------------------------
+// DOM Elements
+// ---------------------------------------
+const formComentarios = document.getElementById('form-comentarios');
+const listaComentarios = document.getElementById('lista-comentarios');
+const mensajeError = document.getElementById('mensaje-error');
+const mensajeExito = document.getElementById('mensaje-exito');
+const inputNombre = document.getElementById('input-nombre');
+const textareaComentario = document.getElementById('textarea-comentario');
+
+// ---------------------------------------
+// Función para crear un elemento li de comentario con animación
+// ---------------------------------------
+function crearElementoComentario({ nombre, comentario, fecha }) {
+  const li = document.createElement('li');
+  li.classList.add('comentario-item');
+  li.style.opacity = '0';
+  li.style.transform = 'translateY(10px)';
+  li.setAttribute('tabindex', '0');
+
+  const fechaFormateada = fecha ? new Date(fecha).toLocaleString('es-ES', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }) : '';
+
+  li.innerHTML = `
+    <p class="comentario-texto">${comentario}</p>
+    <p class="comentario-meta">— ${nombre} ${fechaFormateada ? `| <time datetime="${fecha}">${fechaFormateada}</time>` : ''}</p>
+  `;
+
+  // Animación fade-in + slide-up
+  requestAnimationFrame(() => {
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    li.style.opacity = '1';
+    li.style.transform = 'translateY(0)';
+  });
+
+  return li;
+}
+
+// ---------------------------------------
+// Función para renderizar lista de comentarios en DOM
+// ---------------------------------------
+export async function renderComentarios() {
+  try {
+    // Limpiar lista
+    listaComentarios.innerHTML = '';
+    mensajeError.setAttribute('aria-hidden', 'true');
+    mensajeExito.setAttribute('aria-hidden', 'true');
+
+    const comentarios = await getComentarios();
+
+    if (comentarios.length === 0) {
+      listaComentarios.innerHTML = '<li tabindex="0" class="comentario-vacio">No hay comentarios aún. ¡Sé el primero!</li>';
       return;
     }
 
-    // Set listeners
-    this.form.addEventListener('submit', onFormSubmit.bind(this));
-    this.inputNombre.addEventListener('input', onInputValidate.bind(this));
-    this.inputCorreo.addEventListener('input', onInputValidate.bind(this));
-    this.inputComentario.addEventListener('input', onInputValidate.bind(this));
-
-    // Carga inicial
-    await cargarComentarios();
-
-    // Inicializa conteo votos o recarga si hubiera persistencia futura
-  }
-
-  /** Valida inputs en tiempo real y habilita/deshabilita boton enviar */
-  function onInputValidate() {
-    const nombreValido = this.inputNombre.value.trim().length >= 2;
-    const comentarioValido = this.inputComentario.value.trim().length >= 5;
-    // Correo opcional pero si está, valida formato simple
-    const correoValido = this.inputCorreo.value.trim() === '' || validarEmail(this.inputCorreo.value.trim());
-
-    this.btnEnviar.disabled = !(nombreValido && comentarioValido && correoValido);
-  }
-
-  /** Valida formato básico email (simple) */
-  function validarEmail(email) {
-    // Regex simple RFC 5322 simplificado
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  }
-
-  /** Evento submit formulario */
-  async function onFormSubmit(e) {
-    e.preventDefault();
-    if (this.btnEnviar.disabled) return;
-
-    // Leer entradas y sanitizar con DOMPurify
-    const nombreRaw = this.inputNombre.value;
-    const correoRaw = this.inputCorreo.value;
-    const comentarioRaw = this.inputComentario.value;
-
-    const nombre = DOMPurify.sanitize(nombreRaw);
-    const correo = DOMPurify.sanitize(correoRaw);
-    const comentario = DOMPurify.sanitize(comentarioRaw);
-
-    // Bloquear boton para evitar múltiples envíos
-    this.btnEnviar.disabled = true;
-    this.btnEnviar.textContent = 'Enviando...';
-
-    try {
-      // Enviar comentario a Airtable API a través de js/airtable.js
-      const nuevoComentario = await addComentario({
-        nombre,
-        correo,
-        comentario
-      });
-
-      if (nuevoComentario && nuevoComentario.id) {
-        // Añadir a la lista local y renderizar con animación
-        comentariosCache.unshift({
-          id: nuevoComentario.id,
-          nombre,
-          correo,
-          comentario,
-          fecha: new Date().toISOString(),
-          votos: 0
-        });
-
-        renderListaComentarios();
-        resetFormulario();
-        this.btnEnviar.textContent = 'Enviado ✓';
-        setTimeout(() => {
-          this.btnEnviar.textContent = 'Enviar';
-          this.btnEnviar.disabled = false;
-        }, 1500);
-      } else {
-        throw new Error('Respuesta inesperada al agregar comentario');
-      }
-
-    } catch (err) {
-      console.error('Error al enviar comentario:', err);
-      alert('Hubo un problema al enviar el comentario. Inténtalo más tarde.');
-      this.btnEnviar.disabled = false;
-      this.btnEnviar.textContent = 'Enviar';
-    }
-  }
-
-  /** Reinicia formulario */
-  function resetFormulario() {
-    this.form.reset();
-    this.btnEnviar.disabled = true;
-  }
-
-  /** Carga comentarios desde Airtable y guarda en cache.*/
-  async function cargarComentarios() {
-    try {
-      const { records } = await fetchComentarios({ pageSize: 50 }); // Carga máximo 50
-      comentariosCache = records.map(r => ({
-        id: r.id,
-        nombre: DOMPurify.sanitize(r.fields.Nombre || 'Anónimo'),
-        correo: DOMPurify.sanitize(r.fields.Correo || ''),
-        comentario: DOMPurify.sanitize(r.fields.Comentario || ''),
-        fecha: r.fields.Fecha || '',
-        votos: r.fields.Votos || 0
-      }));
-
-      // Inicializar mapa de votos
-      votos = new Map(comentariosCache.map(c => [c.id, c.votos || 0]));
-
-      renderListaComentarios();
-
-    } catch (err) {
-      console.error('Error cargando comentarios:', err);
-      this.list.innerHTML = '<p role="alert">No se pudieron cargar los comentarios.</p>';
-    }
-  }
-
-  /** Renderiza lista completa de comentarios en DOM */
-  function renderListaComentarios() {
-    // Vaciar lista previa
-    this.list.innerHTML = '';
-    this.countDisplay.textContent = comentariosCache.length;
-
-    comentariosCache.forEach(comentario => {
-      const article = document.createElement('article');
-      article.classList.add('comentario-item');
-      article.setAttribute('tabindex', '0');
-      article.setAttribute('role', 'article');
-      article.setAttribute('aria-label', `Comentario de ${comentario.nombre}`);
-
-      // Fecha legible
-      const fecha = comentario.fecha ? new Date(comentario.fecha) : null;
-      const fechaStr = fecha ? fecha.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' }) : 'Fecha desconocida';
-
-      article.innerHTML = `
-        <header class="comentario-header">
-          <h3 class="comentario-nombre">${comentario.nombre}</h3>
-          <time datetime="${fecha ? fecha.toISOString() : ''}" class="comentario-fecha">${fechaStr}</time>
-        </header>
-        <p class="comentario-texto">${comentario.comentario}</p>
-        <footer class="comentario-footer">
-          <button class="btn-votar" aria-pressed="false" aria-label="Me gusta comentar de ${comentario.nombre}" data-id="${comentario.id}" data-votos="${votos.get(comentario.id) || 0}">
-            👍 <span class="contador-votos">${votos.get(comentario.id) || 0}</span>
-          </button>
-        </footer>
-      `;
-
-      // Añadir animación slide-in
-      article.style.opacity = 0;
-      article.style.transform = 'translateX(-30px)';
-      this.list.appendChild(article);
-      requestAnimationFrame(() => {
-        article.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        article.style.opacity = 1;
-        article.style.transform = 'translateX(0)';
-      });
+    comentarios.forEach(entry => {
+      const li = crearElementoComentario(entry);
+      listaComentarios.appendChild(li);
     });
+  } catch (error) {
+    mensajeError.textContent = 'No se pudieron cargar los comentarios. Intenta más tarde.';
+    mensajeError.setAttribute('aria-hidden', 'false');
+  }
+}
 
-    // Añadir listeners a botones de voto
-    this.list.querySelectorAll('.btn-votar').forEach(btn => {
-      btn.removeEventListener('click', onVoteClick);
-      btn.addEventListener('click', onVoteClick);
-      btn.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          btn.click();
-        }
-      });
-    });
+// ---------------------------------------
+// Función para mostrar mensaje de error durante tiempo limitado
+// ---------------------------------------
+function mostrarError(mensaje) {
+  mensajeError.textContent = mensaje;
+  mensajeError.setAttribute('aria-hidden', 'false');
+  mensajeExito.setAttribute('aria-hidden', 'true');
+}
+
+// ---------------------------------------
+// Función para mostrar mensaje de éxito durante tiempo limitado
+// ---------------------------------------
+function mostrarExito(mensaje) {
+  mensajeExito.textContent = mensaje;
+  mensajeExito.setAttribute('aria-hidden', 'false');
+  mensajeError.setAttribute('aria-hidden', 'true');
+}
+
+// ---------------------------------------
+// Manejar evento submit del formulario
+// ---------------------------------------
+async function handleSubmit(event) {
+  event.preventDefault();
+
+  const nombre = inputNombre.value.trim();
+  const comentario = textareaComentario.value.trim();
+
+  mensajeError.setAttribute('aria-hidden', 'true');
+  mensajeExito.setAttribute('aria-hidden', 'true');
+
+  // Validación frontend
+  if (!nombre) {
+    mostrarError('Por favor ingresa tu nombre.');
+    inputNombre.focus();
+    return;
+  }
+  if (!comentario) {
+    mostrarError('Por favor escribe un comentario.');
+    textareaComentario.focus();
+    return;
   }
 
-  /** Maneja click en botón votar */
-  function onVoteClick(e) {
-    const btn = e.currentTarget;
-    const id = btn.dataset.id;
-    if (!id) return;
+  try {
+    // Añadir comentario a Airtable
+    await addComentario({ nombre, comentario });
 
-    const votosPrevios = votos.get(id) || 0;
-    const pulsado = btn.getAttribute('aria-pressed') === 'true';
+    mostrarExito('Comentario enviado con éxito.');
 
-    if (!pulsado) {
-      votos.set(id, votosPrevios + 1);
-      btn.setAttribute('aria-pressed', 'true');
-      btn.querySelector('.contador-votos').textContent = votosPrevios + 1;
-    } else {
-      // Permite quitar voto (toggle)
-      votos.set(id, votosPrevios - 1 >= 0 ? votosPrevios -1 : 0);
-      btn.setAttribute('aria-pressed', 'false');
-      btn.querySelector('.contador-votos').textContent = votosPrevios - 1 >= 0 ? votosPrevios -1 : 0;
-    }
+    // Limpiar formulario
+    formComentarios.reset();
+
+    // Recargar lista de comentarios actualizada
+    await renderComentarios();
+  } catch (error) {
+    mostrarError('Error al enviar el comentario. Intenta más tarde.');
+  }
+}
+
+// ---------------------------------------
+// Inicialización: añadir listener y cargar comentarios
+// ---------------------------------------
+export function initComentarios() {
+  if (!formComentarios || !listaComentarios) {
+    console.warn('Elementos del DOM para comentarios no encontrados.');
+    return;
   }
 
-  return {
-    init,
-  };
-})();
+  formComentarios.addEventListener('submit', handleSubmit);
+
+  // Cargar comentarios iniciales
+  renderComentarios();
+
+  // Refrescar cada 2 minutos (120000 ms)
+  setInterval(() => {
+    renderComentarios();
+  }, 120000);
+}
+
+// Auto-inicializa cuando se carga el módulo y DOM está listo
+document.addEventListener('DOMContentLoaded', () => {
+  initComentarios();
+});
