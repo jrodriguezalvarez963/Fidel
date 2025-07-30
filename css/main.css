@@ -1,17 +1,16 @@
 /* main.css */
 
-/* 
-  Reset CSS moderno basado en prácticas recomendadas para 2025 
-  - Box-sizing border-box para todos los elementos
-  - Eliminación de márgenes por defecto
-  - Normalización de tipografía, tamaño, y comportamiento base
-  - Soporte para preferencia de usuario reducción de animaciones
-  - Variables CSS globales para paletas de colores por sección
-  - Helpers generales de tipografía, layout y accesibilidad
+/*
+  Reset CSS moderno y variables globales para todo el proyecto
+  - Box-sizing border-box global para manejo consistente de dimensiones
+  - Variables CSS para paletas temáticas por sección
+  - Helpers para tipografía, espaciados, flexbox y grid
   - Media queries base para mobile, tablet y desktop
+  - Estilos base para body, texto, enlaces y botones
+  - Estilos para accesibilidad: modo alto contraste y reducción de animaciones
 */
 
-/* 1. Reset básico y modelo caja */
+/* -------- 1. Reset básico y box-sizing -------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -20,12 +19,12 @@
   vertical-align: baseline;
 }
 
-/* 2. Remover estilos por defecto en listas */
+/* Reset específico para listas con rol list */
 ul[role='list'], ol[role='list'] {
   list-style: none;
 }
 
-/* 3. HTML elementos de texto */
+/* Tipografía y comportamiento base */
 html {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -35,29 +34,28 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   line-height: 1.5;
-  color: #000000;
-  background-color: #ffffff;
+  color: var(--negro-profundo, #000000);
+  background-color: var(--blanco-limpio, #ffffff);
 }
 
-/* 4. Body con altura mínima y line-height legible */
 body {
   min-height: 100vh;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--blanco-limpio);
-  color: var(--negro-profundo);
+  background-color: var(--blanco-limpio, #ffffff);
+  color: var(--negro-profundo, #000000);
 }
 
-/* 5. Imágenes y medios responive */
+/* Imágenes y medios fluidos */
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* 6. Inputs, botones y selects con herencia de fuente */
+/* Inputs, botones y selects heredan fuente */
 input, button, textarea, select {
   font: inherit;
   color: inherit;
@@ -66,7 +64,7 @@ input, button, textarea, select {
   outline-offset: 2px;
 }
 
-/* 7. Links sin decoraciones por defecto */
+/* Links base */
 a:not([class]) {
   color: inherit;
   text-decoration-skip-ink: auto;
@@ -74,7 +72,7 @@ a:not([class]) {
   cursor: pointer;
 }
 
-/* 8. Botones reset */
+/* Reset botones */
 button {
   all: unset;
   cursor: pointer;
@@ -84,7 +82,7 @@ button {
   user-select: none;
 }
 
-/* 9. Text wrapping y balance para encabezados */
+/* Encabezados y textos */
 h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
   text-wrap: balance;
@@ -97,12 +95,12 @@ p {
   margin-bottom: 1em;
 }
 
-/* 10. Scroll margin para navegación anclada */
+/* Scroll margin para anclas */
 :target {
   scroll-margin-block: 5ex;
 }
 
-/* 11. Preferencia para reducir animaciones */
+/* Preferencia usuario para reducir animaciones */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -113,31 +111,30 @@ p {
   }
 }
 
-/* 12. Variables CSS: Paletas por sección */
-
-/****** Paleta Home - Minimalismo Revolucionario *****/
+/* -------- 2. Variables CSS: Paletas por sección -------- */
 :root {
+  /* Paleta Home - Minimalismo Revolucionario */
   --rojo-revolucion: #CB1515;
   --azul-bandera: #002A8F;
   --blanco-limpio: #FFFFFF;
   --negro-profundo: #000000;
   --oro-vibrante: #D4AF37;
 
-  /****** Paleta Curiosidades - Cómic Caricaturesco *****/
+  /* Paleta Curiosidades - Cómic Caricaturesco */
   --amarillo-comic: #FFD100;
   --rojo-boom: #FF3C00;
   --azul-chillon: #00A2FF;
   --blanco-comic: #FFFFFF;
   --negro-comic: #000000;
 
-  /****** Paleta Análisis - Biblioteca Académica *****/
+  /* Paleta Análisis - Biblioteca Académica */
   --marron-madera: #4E3524;
   --beige-libro: #D7C9AA;
   --hueso-palido: #F5F0E5;
   --verde-sabio: #2E5E4E;
   --burdeos-elegante: #800020;
 
-  /****** Paleta México - Arte Popular Digitalizado *****/
+  /* Paleta México - Arte Popular Digitalizado */
   --verde-nopal: #006847;
   --rojo-sangre: #CE1126;
   --blanco-mexico: #FFFFFF;
@@ -145,9 +142,9 @@ p {
   --turquesa-mexicano: #40B5AD;
 }
 
-/* 13. Helpers generales */
+/* -------- 3. Helpers globales -------- */
 
-/* Tipografías comunes */
+/* Textos */
 .text-center {
   text-align: center;
 }
@@ -164,24 +161,13 @@ p {
   font-weight: 700;
 }
 
-/* Espaciado común */
-.mt-0 {
-  margin-top: 0;
-}
+/* Espaciado */
+.mt-0 { margin-top: 0; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.p-1  { padding: 1rem; }
 
-.mb-1 {
-  margin-bottom: 1rem;
-}
-
-.mb-2 {
-  margin-bottom: 2rem;
-}
-
-.p-1 {
-  padding: 1rem;
-}
-
-/* Flex helpers */
+/* Flexbox */
 .flex {
   display: flex;
 }
@@ -197,7 +183,7 @@ p {
   flex-direction: column;
 }
 
-/* Grid helpers */
+/* Grid */
 .grid {
   display: grid;
 }
@@ -206,7 +192,7 @@ p {
   grid-gap: 1rem;
 }
 
-/* Visually hidden (para accesibilidad) */
+/* Ocultar para accesibilidad */
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -219,39 +205,39 @@ p {
   border: 0 !important;
 }
 
-/* 14. Media queries base */
+/* -------- 4. Media Queries Base -------- */
 
-/* Móvil - 360px */
+/* Móvil: 360px */
 @media (max-width: 479px) {
   html {
     font-size: 14px;
   }
 }
 
-/* Tablet - 768px */
+/* Tablet: 768px */
 @media (min-width: 480px) and (max-width: 1023px) {
   html {
     font-size: 15px;
   }
 }
 
-/* Desktop - 1200px+ */
+/* Desktop: 1200px+ */
 @media (min-width: 1024px) {
   html {
     font-size: 16px;
   }
 }
 
-/* 15. Modo alto contraste para accesibilidad */
+/* -------- 5. Modo alto contraste y accesibilidad -------- */
 
 @media (prefers-contrast: more) {
   body {
-    background-color: #000;
-    color: #fff;
+    background-color: #000000;
+    color: #ffffff;
   }
 
   a, button {
-    color: #FFD700; /* dorado para contraste */
+    color: #FFD700;
     outline: 2px solid #FFD700;
   }
 
