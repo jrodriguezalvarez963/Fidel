@@ -2,7 +2,6 @@
 
 /**
  * Módulo para gestionar la sección de comentarios integrados con Airtable
- * Uso único de las constantes y funciones
  */
 
 const BASE_ID = 'app45M30CM1ccXTau';
@@ -15,7 +14,7 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-// Captura de elementos DOM (que existan una sola vez)
+// Captura de elementos DOM
 const formComentarios = document.getElementById('form-comentarios');
 const listaComentarios = document.getElementById('lista-comentarios');
 const mensajeError = document.getElementById('mensaje-error');
@@ -24,9 +23,8 @@ const inputNombre = document.getElementById('input-nombre');
 const textareaComentario = document.getElementById('textarea-comentario');
 
 /**
- * Sanitiza texto para evitar XSS (escape básico)
+ * Sanitiza texto para evitar inyecciones de HTML/JS (escape básico)
  * @param {string} str
- * @returns {string}
  */
 function sanitizeText(str) {
   const div = document.createElement('div');
@@ -40,26 +38,25 @@ function sanitizeText(str) {
 async function getComentarios() {
   try {
     const url = `${AIRTABLE_URL}?sort[0][field]=fecha&sort[0][direction]=desc`;
-    const resp = await fetch(url, { headers: HEADERS });
-    if (!resp.ok) throw new Error(`Error al obtener comentarios: ${resp.status} ${resp.statusText}`);
-    const data = await resp.json();
-
-    return data.records.map(record => ({
-      id: record.id,
-      nombre: record.fields.nombre || 'Anónimo',
-      comentario: record.fields.comentario || '',
-      fecha: record.fields.fecha || record.createdTime,
-      likes: Number(record.fields.likes) || 0,
+    const response = await fetch(url, { headers: HEADERS });
+    if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.status} ${response.statusText}`);
+    const data = await response.json();
+    return data.records.map(rec => ({
+      id: rec.id,
+      nombre: rec.fields.nombre || 'Anónimo',
+      comentario: rec.fields.comentario || '',
+      fecha: rec.fields.fecha || rec.createdTime || '',
+      likes: Number(rec.fields.likes) || 0,
     }));
-  } catch (e) {
-    console.error(e);
-    throw e;
+  } catch (error) {
+    console.error('getComentarios:', error);
+    throw error;
   }
 }
 
 /**
  * Envía un nuevo comentario a Airtable
- * @param {{nombre:string, comentario:string}} data 
+ * @param {{nombre:string, comentario:string}} data
  */
 async function addComentario(data) {
   const nombre = (data.nombre || '').trim();
@@ -72,27 +69,30 @@ async function addComentario(data) {
   const safeComentario = sanitizeText(comentario);
 
   const body = {
-    records: [{
-      fields: {
-        nombre: safeNombre,
-        comentario: safeComentario,
-        fecha: new Date().toISOString(),
-        likes: 0
-      }
-    }]
+    records: [
+      {
+        fields: {
+          nombre: safeNombre,
+          comentario: safeComentario,
+          fecha: new Date().toISOString(),
+          likes: 0,
+        },
+      },
+    ],
   };
 
-  const resp = await fetch(AIRTABLE_URL, {
+  const response = await fetch(AIRTABLE_URL, {
     method: 'POST',
     headers: HEADERS,
     body: JSON.stringify(body),
   });
 
-  if (!resp.ok) {
-    const errText = await resp.text();
-    throw new Error(`Error al enviar comentario: ${resp.status} ${resp.statusText} - ${errText}`);
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error al enviar comentario: ${response.status} ${response.statusText} - ${errorText}`);
   }
-  return await resp.json();
+
+  return await response.json();
 }
 
 /**
@@ -110,16 +110,18 @@ function crearElementoComentario({ nombre, comentario, fecha, likes }) {
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }) : '';
 
   li.innerHTML = `
     <p class="comentario-texto">${comentario}</p>
     <p class="comentario-meta">
-      — ${nombre} ${likes > 0 ? `| ❤️ ${likes}` : ''} ${fechaFormateada ? `| <time datetime="${fecha}">${fechaFormateada}</time>` : ''}
+      — ${nombre} ${likes > 0 ? `| ❤️ ${likes}` : ''} 
+      ${fechaFormateada ? `| <time datetime="${fecha}">${fechaFormateada}</time>` : ''}
     </p>
   `;
 
+  // Animación fade in y desplazamiento
   requestAnimationFrame(() => {
     li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     li.style.opacity = '1';
@@ -134,7 +136,9 @@ function crearElementoComentario({ nombre, comentario, fecha, likes }) {
  */
 function mostrarError(msg) {
   mensajeError.textContent = msg;
+  mensajeError.style.display = 'block';
   mensajeError.setAttribute('aria-hidden', 'false');
+  mensajeExito.style.display = 'none';
   mensajeExito.setAttribute('aria-hidden', 'true');
 }
 
@@ -143,7 +147,9 @@ function mostrarError(msg) {
  */
 function mostrarExito(msg) {
   mensajeExito.textContent = msg;
+  mensajeExito.style.display = 'block';
   mensajeExito.setAttribute('aria-hidden', 'false');
+  mensajeError.style.display = 'none';
   mensajeError.setAttribute('aria-hidden', 'true');
 }
 
@@ -151,7 +157,9 @@ function mostrarExito(msg) {
  * Limpia mensajes
  */
 function limpiarMensajes() {
+  mensajeError.style.display = 'none';
   mensajeError.setAttribute('aria-hidden', 'true');
+  mensajeExito.style.display = 'none';
   mensajeExito.setAttribute('aria-hidden', 'true');
 }
 
@@ -172,7 +180,6 @@ async function renderComentarios() {
     comentarios.forEach(c => {
       listaComentarios.appendChild(crearElementoComentario(c));
     });
-
   } catch (error) {
     mostrarError('No se pudieron cargar los comentarios. Intenta más tarde.');
     console.error(error);
@@ -227,93 +234,3 @@ export function initComentarios() {
 document.addEventListener('DOMContentLoaded', () => {
   initComentarios();
 });
-
-const BASE_ID = 'app45M30CM1ccXTau';
-const TABLE_COMENTARIOS = 'pagf41O43clXr44HT'; // Actualiza si el ID es otro
-const API_KEY = 'patju3fjNyKDBeCGp.68ab3d377eb0bbffeaeade69fedd53edbc3c8d3686bd66da85abfd9fc8a5251c';
-
-const AIRTABLE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_COMENTARIOS}`;
-const HEADERS = {
-  'Authorization': `Bearer ${API_KEY}`,
-  'Content-Type': 'application/json',
-};
-
-const formComentarios = document.getElementById('form-comentarios');
-const listaComentarios = document.getElementById('lista-comentarios');
-const mensajeError = document.getElementById('mensaje-error');
-const mensajeExito = document.getElementById('mensaje-exito');
-const inputNombre = document.getElementById('input-nombre');
-const textareaComentario = document.getElementById('textarea-comentario');
-
-function sanitizeText(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-async function getComentarios() {
-  try {
-    const url = `${AIRTABLE_URL}?sort[0][field]=fecha&sort[0][direction]=desc`;
-    const response = await fetch(url, { headers: HEADERS });
-    if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.status} ${response.statusText}`);
-    const data = await response.json();
-    return data.records.map(rec => ({
-      id: rec.id,
-      nombre: rec.fields.nombre || 'Anónimo',
-      comentario: rec.fields.comentario || '',
-      fecha: rec.fields.fecha || rec.createdTime,
-      likes: rec.fields.likes || 0,
-    }));
-  } catch (error) {
-    console.error('getComentarios:', error);
-    throw error;
-  }
-}
-
-async function addComentario({ nombre, comentario }) {
-  if (!nombre || !comentario) throw new Error('Nombre y comentario son requeridos');
-
-  const safeNombre = sanitizeText(nombre.trim());
-  const safeComentario = sanitizeText(comentario.trim());
-
-  const body = {
-    records: [
-      {
-        fields: {
-          nombre: safeNombre,
-          comentario: safeComentario,
-          fecha: new Date().toISOString(),
-          likes: 0,
-        },
-      },
-    ],
-  };
-
-  const response = await fetch(AIRTABLE_URL, {
-    method: 'POST',
-    headers: HEADERS,
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Error al enviar comentario: ${response.status} ${response.statusText} - ${text}`);
-  }
-
-  return await response.json();
-}
-
-function mostrarError(msg) {
-  mensajeError.textContent = msg;
-  mensajeError.style.display = 'block';
-  mensajeExito.style.display = 'none';
-}
-
-function mostrarExito(msg) {
-  mensajeExito.textContent = msg;
-  mensajeExito.style.display = 'block';
-  mensajeError.style.display = 'none';
-}
-
-function limpiarMensajes() {
-  mensajeError.style.display
