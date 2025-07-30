@@ -1,0 +1,199 @@
+/* ==========================================================================
+   ANALISIS.CSS - ESTILOS ESPECÍFICOS PARA LA SECCIÓN DE ANÁLISIS
+   ========================================================================== */
+
+/* ==========================================================================
+   ESTILOS GENERALES DE LA PÁGINA
+   ========================================================================== */
+
+:root {
+    --color-fondo-papel: #f9f7f4;
+    --color-texto: #1a1a1a;
+    --color-primario: #a80000;
+    --color-acento: #2c3e50;
+    --color-subrayado: #e9e5de;
+}
+
+body {
+    font-family: 'Lora', serif;
+    background-color: var(--color-fondo-papel);
+    color: var(--color-texto);
+}
+
+.page-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: var(--color-acento);
+    color: var(--color-fondo-papel);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 10;
+}
+
+.page-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 8vw, 5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    font-family: 'Roboto Mono', monospace;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-style: italic;
+    color: var(--color-primario);
+}
+
+/* ==========================================================================
+   SECCIONES DE ANÁLISIS
+   ========================================================================== */
+
+.analysis-section {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-title-large {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    color: var(--color-primario);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 0.08em;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 1.2;
+}
+
+.section-motto {
+    font-style: italic;
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.speech-article {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-subrayado);
+}
+
+.speech-title {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    color: var(--color-acento);
+    margin-bottom: 1rem;
+}
+
+.speech-meta {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.speech-quote {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-style: italic;
+    border-left: 5px solid var(--color-primario);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    background-color: var(--color-subrayado);
+    border-radius: 4px;
+}
+
+.speech-quote p {
+    margin: 0;
+    color: #333;
+}
+
+.speech-body p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.speech-body ul {
+    line-height: 1.8;
+    padding-left: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.speech-body li {
+    margin-bottom: 0.5rem;
+}
+
+/* Estilos para los divisores */
+.section-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--color-subrayado);
+    margin: 4rem 0;
+}
+
+.section-divider-long {
+    border: none;
+    height: 3px;
+    background-color: var(--color-primario);
+    margin: 6rem auto;
+    width: 50%;
+    opacity: 0.7;
+}
+
+.reflection-closure {
+    background-color: var(--color-subrayado);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+    border: 1px dashed var(--color-acento);
+}
+
+.reflection-closure p, .reflection-closure ul {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.reflection-closure strong {
+    color: var(--color-primario);
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 950px) {
+    .analysis-section {
+        margin: 2rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .page-title {
+        font-size: 2.5rem;
+    }
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    .analysis-section {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    .speech-title {
+        font-size: 1.2rem;
+    }
+    .speech-quote {
+        padding-left: 1rem;
+        font-size: 1rem;
+    }
+    .section-divider-long {
+        width: 80%;
+    }
+}
