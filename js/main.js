@@ -42,10 +42,12 @@ class Navigation {
 }
 
 /**
- * Añade/remueve clase para foco visible, facilitando estilos para navegación con teclado
+ * Añade y remueve la clase .focus-visible para elementos interactivos
+ * mejora la visualización del foco para teclado
  */
 function setupFocusVisible() {
   function onFocus(event) {
+    // Solo añade focus-visible a elementos que pueden recibir foco lógico
     if (
       event.target.matches(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -62,7 +64,8 @@ function setupFocusVisible() {
 }
 
 /**
- * Devuelve true si el usuario prefiere reducir animaciones según media query
+ * Detecta si el usuario ha solicitado reducir animaciones
+ * @returns {boolean}
  */
 function prefersReducedMotion() {
   if (!window.matchMedia) return false;
@@ -70,9 +73,9 @@ function prefersReducedMotion() {
 }
 
 /**
- * Gestiona callbacks para comportamiento según preferencia de animación del usuario
- * @param {Function} onReduce accion cuando se prefiere reducir animaciones
- * @param {Function} onFull accion cuando se permiten animaciones completas
+ * Gestiona callbacks para responder a cambios en la preferencia de animación
+ * @param {Function} onReduce - Acción cuando se prefiere reducir animaciones
+ * @param {Function} onFull - Acción cuando se permiten animaciones completas
  */
 function handleMotionPreference(onReduce, onFull) {
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -84,7 +87,13 @@ function handleMotionPreference(onReduce, onFull) {
     }
   }
   applyPreference();
-  mediaQuery.addEventListener('change', applyPreference);
+  // Soporte para navegadores modernos que soportan addEventListener en MediaQueryList
+  if (typeof mediaQuery.addEventListener === 'function') {
+    mediaQuery.addEventListener('change', applyPreference);
+  } else if (typeof mediaQuery.addListener === 'function') {
+    // Compatibilidad vieja
+    mediaQuery.addListener(applyPreference);
+  }
 }
 
 /**
@@ -101,7 +110,7 @@ export function initMain() {
   handleMotionPreference(
     () => {
       document.body.classList.add('reduce-motion');
-      // Aquí puedes desactivar animaciones JS adicionales si hay
+      // Aquí puedes desactivar animaciones JS adicionales si las hay
       console.log('Preferencia de animación reducida activada');
     },
     () => {
