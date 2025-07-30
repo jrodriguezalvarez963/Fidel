@@ -65,16 +65,10 @@
     <!-- Sección de comentarios con formulario de Airtable y lista dinámica -->
     <section aria-labelledby="comentarios-titulo" class="seccion-comentarios">
       <h2 id="comentarios-titulo" tabindex="0">Comentarios</h2>
-      
-<form id="form-comentarios">...</form>
-<input id="input-nombre" />
-<textarea id="textarea-comentario"></textarea>
-<div id="mensaje-error" role="alert" aria-live="assertive"></div>
-<div id="mensaje-exito" role="status" aria-live="polite"></div>
-<ul id="lista-comentarios" aria-live="polite" aria-relevant="additions"></ul>
 
       <form id="form-comentarios" aria-describedby="form-instrucciones" novalidate>
         <p id="form-instrucciones" class="visually-hidden">Formulario para dejar nombre y comentario</p>
+
         <label for="input-nombre">Nombre</label>
         <input type="text" id="input-nombre" name="nombre" required aria-required="true" autocomplete="name" />
 
@@ -83,8 +77,8 @@
 
         <button type="submit" aria-label="Enviar comentario">Enviar</button>
 
-        <div id="mensaje-error" role="alert" aria-live="assertive" class="mensaje-error" aria-hidden="true"></div>
-        <div id="mensaje-exito" role="status" aria-live="polite" class="mensaje-exito" aria-hidden="true"></div>
+        <div id="mensaje-error" role="alert" aria-live="assertive" class="mensaje-error" aria-hidden="true" style="display:none"></div>
+        <div id="mensaje-exito" role="status" aria-live="polite" class="mensaje-exito" aria-hidden="true" style="display:none"></div>
       </form>
 
       <ul id="lista-comentarios" aria-live="polite" aria-relevant="additions" tabindex="0" class="lista-comentarios">
@@ -106,7 +100,7 @@
   <!--
     - Animaciones estrella y líneas en css/home.css
     - Cuadros de secciones con animaciones y texturas generativas propias de cada sección
-    - Sistema de comentarios con likes gestionado por js/comentarios.js y airtable API
+    - Sistema de comentarios con likes gestionado por js/comentarios.js y Airtable API
   -->
 </body>
 
