@@ -1,0 +1,312 @@
+/* ==========================================================================
+   HOME.CSS - ESTILOS ESPECÍFICOS PARA LA PÁGINA PRINCIPAL
+   ========================================================================== */
+
+/* Variables de color para la página de inicio, importadas de main.css */
+:root {
+    --rojo: var(--color-home-rojo);
+    --azul: var(--color-home-azul);
+    --blanco: var(--color-home-blanco);
+    --negro: var(--color-home-negro);
+    --oro: var(--color-home-oro);
+}
+
+/* ==========================================================================
+   FONDO Y ANIMACIONES GLOBALES
+   ========================================================================== */
+
+body {
+    background: linear-gradient(180deg, var(--negro) 0%, var(--rojo) 100%);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animación de estrellas doradas en el fondo */
+.header__title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    box-shadow: var(--oro) 0 0 10px, var(--oro) 0 0 20px;
+    animation: twinkle 5s infinite;
+    z-index: -1;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* ==========================================================================
+   HEADER Y TÍTULOS
+   ========================================================================== */
+
+.main-header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+}
+
+.header__title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 10vw, 8rem);
+    color: var(--blanco);
+    letter-spacing: 0.5em;
+    text-shadow: 0 0 10px var(--rojo);
+    animation: fade-in-up 1s ease-out;
+}
+
+.header__lema {
+    font-family: 'Roboto Mono', monospace;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--oro);
+    letter-spacing: 0.2em;
+    margin-top: 1rem;
+    animation: fade-in 2s ease-in-out;
+}
+
+/* Animación de la estrella central */
+.star-container {
+    position: absolute;
+    width: clamp(100px, 40vw, 400px);
+    height: clamp(100px, 40vw, 400px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.star {
+    width: 100%;
+    height: 100%;
+    background-color: var(--oro);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 67% 57%, 78% 91%, 50% 70%, 22% 91%, 33% 57%, 2% 35%, 39% 35%);
+    animation: pulse 2s infinite ease-in-out;
+    will-change: transform, opacity;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* Animación de líneas ondulantes (bandera cubana) */
+.wavy-lines {
+    position: absolute;
+    width: 150%;
+    height: 20px;
+    background: linear-gradient(to right, var(--rojo) 33%, var(--blanco) 33%, var(--blanco) 66%, var(--azul) 66%);
+    top: 20%;
+    left: -25%;
+    transform: rotate(-5deg);
+    animation: wave 10s infinite linear;
+    will-change: transform;
+}
+
+@keyframes wave {
+    0% { transform: translateX(0) rotate(-5deg); opacity: 0.3; }
+    50% { transform: translateX(50px) rotate(5deg); opacity: 0.5; }
+    100% { transform: translateX(0) rotate(-5deg); opacity: 0.3; }
+}
+
+
+/* ==========================================================================
+   GALERÍA DE "PRIMER VISTAZO"
+   ========================================================================== */
+
+.first-look-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 4rem 1rem;
+}
+
+.gallery__item {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery__item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.gallery__item a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.gallery__item .item__content {
+    position: relative;
+    z-index: 2;
+    color: var(--blanco);
+}
+
+.gallery__item.curiosidades {
+    background-color: var(--color-comic-rojo);
+    border: 2px solid var(--color-comic-amarillo);
+}
+
+.gallery__item.analisis {
+    background-color: var(--color-biblioteca-marron);
+}
+
+.gallery__item.mexico {
+    background-color: var(--color-mexico-nopal);
+}
+
+.item__title {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: var(--blanco);
+}
+
+.item__description {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+.item__button {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--oro);
+    background-color: transparent;
+    color: var(--oro);
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.item__button:hover {
+    color: var(--negro);
+}
+
+.item__button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--oro);
+    border-radius: 50%;
+    transition: width 0.4s, height 0.4s;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.item__button:hover::before {
+    width: 200%;
+    height: 200%;
+}
+
+
+/* ==========================================================================
+   SECCIÓN DE COMENTARIOS
+   ========================================================================== */
+
+.comments-section {
+    background-color: var(--negro);
+    color: var(--blanco);
+    padding: 4rem 1rem;
+}
+
+.comment-form {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.comment-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--oro);
+}
+
+.comment-form input,
+.comment-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--rojo);
+    color: var(--blanco);
+    border-radius: 5px;
+}
+
+.comment-form textarea {
+    min-height: 100px;
+}
+
+.submit-button {
+    background-color: var(--rojo);
+    color: var(--blanco);
+    padding: 0.75rem 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: var(--rojo);
+}
+
+.comments-list-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.comments-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--rojo);
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-slide 0.5s forwards;
+}
+
+@keyframes fade-in-slide {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
