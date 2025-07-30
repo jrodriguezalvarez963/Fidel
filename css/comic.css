@@ -1,0 +1,160 @@
+/* ==========================================================================
+   COMIC.CSS - ESTILOS ESPECÍFICOS PARA LA SECCIÓN DE CURIOSIDADES
+   ========================================================================== */
+
+/* Variables de color para la estética de cómic */
+:root {
+    --amarillo-explosivo: var(--color-comic-amarillo);
+    --rojo-boom: var(--color-comic-rojo);
+    --azul-chillon: var(--color-comic-azul);
+    --blanco: var(--color-home-blanco);
+    --negro: var(--color-home-negro);
+}
+
+/* ==========================================================================
+   ESTILOS GENERALES DE LA PÁGINA
+   ========================================================================== */
+
+body {
+    background-color: var(--amarillo-explosivo);
+    background-image:
+        radial-gradient(ellipse at top left, transparent 20%, rgba(255, 255, 255, 0.2) 20%),
+        radial-gradient(ellipse at bottom right, transparent 20%, rgba(255, 255, 255, 0.2) 20%);
+    background-size: 50px 50px;
+}
+
+.page-header {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--rojo-boom);
+    color: var(--blanco);
+    border-bottom: 5px solid var(--negro);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.page-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: 0.2em;
+    text-shadow: 
+        5px 5px 0 var(--negro),
+        10px 10px 0 var(--azul-chillon);
+}
+
+.page-subtitle {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1rem, 3vw, 2rem);
+    color: var(--amarillo-explosivo);
+    letter-spacing: 0.1em;
+    text-shadow: 2px 2px 0 var(--negro);
+}
+
+/* ==========================================================================
+   VIÑETAS Y ANIMACIÓN FLIP CARD
+   ========================================================================== */
+
+.comic-vignettes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
+}
+
+.comic-vignette {
+    perspective: 1000px;
+    height: 350px;
+    border: 4px solid var(--negro);
+    background-color: var(--blanco);
+    border-radius: 15px;
+    box-shadow: 8px 8px 0 var(--negro), 10px 10px 0 var(--rojo-boom);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.comic-vignette:hover {
+    transform: translateY(-5px);
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.comic-vignette:hover .flip-card-inner,
+.comic-vignette:focus .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.flip-card-front {
+    background-color: var(--amarillo-explosivo);
+    color: var(--negro);
+}
+
+.flip-card-back {
+    background-color: var(--azul-chillon);
+    color: var(--blanco);
+    transform: rotateY(180deg);
+    font-family: 'Roboto Mono', monospace;
+}
+
+.vignette-header {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--rojo-boom);
+    border-bottom: 3px solid var(--negro);
+    transform: skew(-10deg);
+    position: absolute;
+    top: 20px;
+    left: -10px;
+    box-shadow: 5px 5px 0 var(--negro);
+}
+
+.vignette-title {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--blanco);
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: 2px 2px 0 var(--negro);
+}
+
+.vignette-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD
+   ========================================================================== */
+
+/* Tablet */
+@media (min-width: 768px) {
+    .comic-vignettes-container {
+        padding: 4rem 4rem;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+    .comic-vignettes-container {
+        padding: 4rem 8rem;
+    }
+}
