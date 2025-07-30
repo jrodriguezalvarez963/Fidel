@@ -1,0 +1,205 @@
+/* ==========================================================================
+   MEXICO.CSS - ESTILOS ESPECÍFICOS PARA LA SECCIÓN DE MÉXICO
+   ========================================================================== */
+
+/* ==========================================================================
+   ESTILOS GENERALES Y PALETA DE COLORES
+   ========================================================================== */
+
+:root {
+    --color-fondo-papel: #fbf9f6;
+    --color-texto-oscuro: #2c2c2c;
+    --color-titulo: #7a3a0e; /* Tonalidad terrosa */
+    --color-acento-subrayado: #c4a16c; /* Dorado viejo */
+    --color-divisor: #a0815c; /* Marrón medio */
+    --color-cita: #4e4a46;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+    background-color: var(--color-fondo-papel);
+    color: var(--color-texto-oscuro);
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   ENCABEZADO
+   ========================================================================== */
+
+.page-header {
+    text-align: center;
+    padding: 4rem 1rem;
+    background-image: url('../img/mexico-bg.jpg'); /* Imagen de fondo relacionada con México */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece la imagen para que el texto resalte */
+}
+
+.page-title, .page-subtitle {
+    position: relative;
+    z-index: 1;
+}
+
+.page-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.page-subtitle {
+    font-family: 'Roboto Mono', monospace;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-style: italic;
+    color: var(--color-acento-subrayado);
+    margin-top: 0.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   SECCIONES Y ARTÍCULOS
+   ========================================================================== */
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.mexico-section {
+    margin-bottom: 3rem;
+}
+
+.main-quote {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-style: italic;
+    text-align: center;
+    border-left: 3px solid var(--color-titulo);
+    padding-left: 1.5rem;
+    margin: 3rem auto;
+    color: var(--color-cita);
+    max-width: 800px;
+}
+
+.main-quote footer {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    margin-top: 1rem;
+    display: block;
+    color: #888;
+}
+
+.article-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--color-titulo);
+    text-align: left;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.mexico-section p {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    margin-bottom: 1.5rem;
+}
+
+.mexico-section ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.mexico-section li {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    margin-bottom: 0.8rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.mexico-section li::before {
+    content: '🇲🇽';
+    position: absolute;
+    left: 0;
+}
+
+.article-quote {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-style: italic;
+    border-left: 4px solid var(--color-acento-subrayado);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    color: var(--color-cita);
+    background-color: #f5f2ed;
+    border-radius: 4px;
+}
+
+.article-quote p {
+    margin: 0;
+}
+
+.section-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--color-divisor);
+    margin: 4rem auto;
+    width: 60%;
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 2rem 1rem;
+    }
+    .page-title {
+        font-size: 3rem;
+    }
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    main {
+        padding: 1rem;
+    }
+    .article-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 2.2rem;
+    }
+    .page-subtitle {
+        font-size: 0.9rem;
+    }
+    .article-title {
+        font-size: 1.4rem;
+    }
+    .main-quote, .article-quote {
+        font-size: 1.1rem;
+    }
+    .section-divider {
+        width: 80%;
+    }
+}
