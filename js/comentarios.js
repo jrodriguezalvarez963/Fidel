@@ -227,3 +227,93 @@ export function initComentarios() {
 document.addEventListener('DOMContentLoaded', () => {
   initComentarios();
 });
+
+const BASE_ID = 'app45M30CM1ccXTau';
+const TABLE_COMENTARIOS = 'pagf41O43clXr44HT'; // Actualiza si el ID es otro
+const API_KEY = 'patju3fjNyKDBeCGp.68ab3d377eb0bbffeaeade69fedd53edbc3c8d3686bd66da85abfd9fc8a5251c';
+
+const AIRTABLE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_COMENTARIOS}`;
+const HEADERS = {
+  'Authorization': `Bearer ${API_KEY}`,
+  'Content-Type': 'application/json',
+};
+
+const formComentarios = document.getElementById('form-comentarios');
+const listaComentarios = document.getElementById('lista-comentarios');
+const mensajeError = document.getElementById('mensaje-error');
+const mensajeExito = document.getElementById('mensaje-exito');
+const inputNombre = document.getElementById('input-nombre');
+const textareaComentario = document.getElementById('textarea-comentario');
+
+function sanitizeText(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function getComentarios() {
+  try {
+    const url = `${AIRTABLE_URL}?sort[0][field]=fecha&sort[0][direction]=desc`;
+    const response = await fetch(url, { headers: HEADERS });
+    if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.status} ${response.statusText}`);
+    const data = await response.json();
+    return data.records.map(rec => ({
+      id: rec.id,
+      nombre: rec.fields.nombre || 'Anónimo',
+      comentario: rec.fields.comentario || '',
+      fecha: rec.fields.fecha || rec.createdTime,
+      likes: rec.fields.likes || 0,
+    }));
+  } catch (error) {
+    console.error('getComentarios:', error);
+    throw error;
+  }
+}
+
+async function addComentario({ nombre, comentario }) {
+  if (!nombre || !comentario) throw new Error('Nombre y comentario son requeridos');
+
+  const safeNombre = sanitizeText(nombre.trim());
+  const safeComentario = sanitizeText(comentario.trim());
+
+  const body = {
+    records: [
+      {
+        fields: {
+          nombre: safeNombre,
+          comentario: safeComentario,
+          fecha: new Date().toISOString(),
+          likes: 0,
+        },
+      },
+    ],
+  };
+
+  const response = await fetch(AIRTABLE_URL, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Error al enviar comentario: ${response.status} ${response.statusText} - ${text}`);
+  }
+
+  return await response.json();
+}
+
+function mostrarError(msg) {
+  mensajeError.textContent = msg;
+  mensajeError.style.display = 'block';
+  mensajeExito.style.display = 'none';
+}
+
+function mostrarExito(msg) {
+  mensajeExito.textContent = msg;
+  mensajeExito.style.display = 'block';
+  mensajeError.style.display = 'none';
+}
+
+function limpiarMensajes() {
+  mensajeError.style.display
